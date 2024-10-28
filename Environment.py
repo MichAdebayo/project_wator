@@ -41,7 +41,7 @@ class Environment:
             else:
                 pass
                 #print(f"il y a déja un requin ou un thon ici ({(x,y)})")
-        return self.grille
+        return self.grille, sharks_coord,tunas_coord
 
     def afficher_grille(self):
         new_grille = [[0 for i in range(self.longueur)] for j in range(self.largeur)]
@@ -54,8 +54,11 @@ class Environment:
         time.sleep(0.25)
 
 ma_planete = Environment(5,5)
-ma_planete.init_grille()
+print(ma_planete.init_grille())
 ma_planete.afficher_grille()
 
-
 # if __name__ == "__main__":
+
+ma_planete = Environment(5,5)
+b = ma_planete.init_grille()[1]
+print(b)
