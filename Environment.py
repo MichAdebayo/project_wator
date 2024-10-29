@@ -53,6 +53,9 @@ class Environment:
         print(self.longueur*3*'_')
         time.sleep(0.25)
 
+    def toroidal_permission(self, x, y):
+        return x % self.largeur, y % self.longueur
+
 ma_planete = Environment(5,5)
 print(ma_planete.init_grille())
 ma_planete.afficher_grille()
