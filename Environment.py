@@ -13,8 +13,8 @@ class Environment:
         population = round(settings.taux_occupation *(self.longueur*self.largeur))
 
 
-        pop_sharks = round(0.3*population)
-        pop_tunas = round(0.7*population)
+        pop_sharks = round(settings.nb_tunas*population)
+        pop_tunas = round(settings.nb_tunas*population)
         if pop_sharks > self.largeur*self.longueur:
             raise ValueError("Sharks population exceeds environment space")
 
@@ -53,12 +53,15 @@ class Environment:
         print(self.longueur*3*'_')
         time.sleep(0.25)
 
+    def toroidal_permission(self, x, y):
+        return x % self.largeur, y % self.longueur
+
 ma_planete = Environment(5,5)
 print(ma_planete.init_grille())
 ma_planete.afficher_grille()
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 
-ma_planete = Environment(5,5)
-b = ma_planete.init_grille()[1]
-print(b)
+    ma_planete = Environment(5,5)
+    b = ma_planete.init_grille()[1]
+    print(b)
