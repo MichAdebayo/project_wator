@@ -2,10 +2,10 @@ import random
 import time
 
 class Shark:
-    def __init__(self, energy, position):
+    def __init__(self, energy, position, compteur_thon_mangés=0):
         self.position = position
         self.energy = energy
-
+        self.compteur_thon_mangés = compteur_thon_mangés
 
     def check_and_move(self):
         east_position = (self.position[0] + 1, self.position[1])
@@ -23,6 +23,7 @@ class Shark:
                 if controle_case == ".":
                     self.energy -= 1
                     self.position = i
+                    self.compteur_thon_mangés += 1
                     break
 
                 elif controle_case == "T":
@@ -45,33 +46,25 @@ grid = [
 ]
 
 # initialisation requin avec energy et position
-
 shark = Shark(energy=10, position=(0, 2))
-
 
 # Boucle while tant que requin est vivant
 while shark.energy > 0:
-    
-    print("\033[H\033[J") #permet d'effacer chaque terminal
+    print("\033[H\033[J", end="") 
     print("\nPosition actuelle:", shark.position)
     print("Énergie actuelle:", shark.energy)
     print("Grille:")
 
-    
-    ancienne_position = (shark.position[0], shark.position[1])
-    grid[shark.position[0]][shark.position[1]] = "S"
-    # grid[ancienne_position[0]][ancienne_position[1]] = "." 
+    for row in grid:
+        print(" ".join(row))
 
 
-
-
-
-
-
-    for ligne in grid:
-        print("  ".join(ligne))
-
-
+    #x, y = shark.position
+    #for i, row in enumerate(grid):
+        #affichage = row.copy()
+    #if i == x:
+        #affichage[y] = "S"  # Place le requin à sa position actuelle
+    #print(" ".join)
 
 
     
