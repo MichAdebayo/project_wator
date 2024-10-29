@@ -1,7 +1,7 @@
 class Fish:
 
     def __init__(self, x, y, chronos):
-        
+        self.name = 'f'
         self.x = x 
         self.y = y
         self.chronos = chronos
