@@ -14,7 +14,7 @@ class Shark:
         south_position = (self.position[0], self.position[1] - 1)
 
         position_voisine = [east_position, west_position, north_position, south_position]
-        random.shuffle(position_voisine)  
+        # random.choice(position_voisine)  
 
         for i in position_voisine:
             if 0 <= i[0] < len(grid) and 0 <= i[1] < len(grid[0]):  # limites de la grille
@@ -47,23 +47,18 @@ grid = [
 # initialisation requin avec energy et position
 
 shark = Shark(energy=10, position=(0, 2))
+ancienne_position = (shark.position[0], shark.position[1])
 
 
 # Boucle while tant que requin est vivant
 while shark.energy > 0:
     
-    print("\033[H\033[J") #permet d'effacer chaque terminal
+    # print("\033[H\033[J") #permet d'effacer chaque terminal
     print("\nPosition actuelle:", shark.position)
     print("Énergie actuelle:", shark.energy)
     print("Grille:")
 
     
-    ancienne_position = (shark.position[0], shark.position[1])
-    grid[shark.position[0]][shark.position[1]] = "S"
-    # grid[ancienne_position[0]][ancienne_position[1]] = "." 
-
-
-
 
 
 
@@ -72,13 +67,15 @@ while shark.energy > 0:
         print("  ".join(ligne))
 
 
-
-
-    
     time.sleep(1)
 
     
+    ancienne_position = (shark.position[0], shark.position[1])
     shark.check_and_move()
+    print(ancienne_position)
+    print(shark.position)
+    grid[ancienne_position[0]][ancienne_position[1]] = "." 
+    grid[shark.position[0]][shark.position[1]] = "S"
     shark.check_energy()  
 
 print("\nLe requin n'a plus d'énergie et ne peut plus se déplacer.")
