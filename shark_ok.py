@@ -2,35 +2,48 @@ import random
 import time
 
 class Shark:
-    def __init__(self, energy, position, compteur_thon_mangés=0):
+    def __init__(self, energy, position, compteur_tour=0):
         self.position = position
         self.energy = energy
-        self.compteur_thon_mangés = compteur_thon_mangés
+        self.compteur_tour = compteur_tour
 
     def check_and_move(self):
-        east_position = (self.position[0] + 1, self.position[1])
-        west_position = (self.position[0] - 1, self.position[1])
-        north_position = (self.position[0], self.position[1] + 1)
-        south_position = (self.position[0], self.position[1] - 1)
+    
+        east_position = ((self.position[0]) % len(grid), (self.position[1]+1) % len(grid))
+        west_position = ((self.position[0] )% len(grid), (self.position[1]-1 )% len(grid))
+        north_position = ((self.position[0]-1 )% len(grid), (self.position[1])% len(grid))
+        south_position = ((self.position[0]+1) % len(grid), (self.position[1]) % len(grid))
 
         position_voisine = [east_position, west_position, north_position, south_position]
-        random.shuffle(position_voisine)  
 
-        for i in position_voisine:
+    
+        thon_possible = []
+        mouv_possible = []
+
+        for i in position_voisine :
+
+            self.compteur_tour += 1 
+            
             if 0 <= i[0] < len(grid) and 0 <= i[1] < len(grid[0]):  # limites de la grille
                 controle_case = grid[i[0]][i[1]]
 
-                if controle_case == ".":
-                    self.energy -= 1
-                    self.position = i
-                    self.compteur_thon_mangés += 1
-                    break
+                if controle_case == "T" :
+                    thon_possible.append(i)
+                    
+                elif controle_case == "." : 
+                    mouv_possible.append(i)
+            
+            if thon_possible : 
+                eat = random.choice(thon_possible)
+                self.energy += 1
+                self.position = eat
+                grid[eat[0]][eat[1]] = "." 
 
-                elif controle_case == "T":
-                    self.energy += 1
-                    self.position = i
-                    grid[i[0]][i[1]] = "."  # le thon est remplacé par une case vide
-                    break
+            elif not thon_possible and mouv_possible :
+                mouv = random.choice(mouv_possible) 
+                self.energy -= 1
+                self.position = mouv
+
 
     def check_energy(self):
         if self.energy == 0:
@@ -38,7 +51,7 @@ class Shark:
 
 
 grid = [
-    ["T", ".", ".", ".", "T"],
+    [".", ".", ".", ".", "T"],
     [".", "T", ".", ".", "."],
     [".", ".", ".", "T", "."],
     [".", ".", ".", ".", "."],
@@ -46,34 +59,30 @@ grid = [
 ]
 
 # initialisation requin avec energy et position
-shark = Shark(energy=10, position=(0, 2))
+shark = Shark(energy=100, position=(0, 0)) #(ligne3,colonne 0)
 
-# Boucle while tant que requin est vivant
 while shark.energy > 0:
-    print("\033[H\033[J", end="") 
+    
+    # print("\033[H\033[J") #permet d'effacer chaque terminal
     print("\nPosition actuelle:", shark.position)
     print("Énergie actuelle:", shark.energy)
     print("Grille:")
 
-    for row in grid:
-        print(" ".join(row))
+
+    for ligne in grid:
+        print("  ".join(ligne))
 
 
-    #x, y = shark.position
-    #for i, row in enumerate(grid):
-        #affichage = row.copy()
-    #if i == x:
-        #affichage[y] = "S"  # Place le requin à sa position actuelle
-    #print(" ".join)
-
-
-    
     time.sleep(1)
 
     
+    ancienne_position = (shark.position[0], shark.position[1])
     shark.check_and_move()
+    print(ancienne_position)
+    print(shark.position)
+    grid[ancienne_position[0]][ancienne_position[1]] = "." 
+    grid[shark.position[0]][shark.position[1]] = "S"
     shark.check_energy()  
 
 print("\nLe requin n'a plus d'énergie et ne peut plus se déplacer.")
 print("Position finale:", shark.position)
-print("Nombre de thons mangés:", shark.compteur_thon_mangés)
