@@ -60,7 +60,7 @@ grid = [
 ]
 
 # initialisation requin avec energy et position
-shark = Shark(energy=50, position=(0, 0)) #(ligne3,colonne 0)
+shark = Shark(energy=10, position=(0, 0)) #(ligne3,colonne 0)
 
 while shark.energy > 0:
     
