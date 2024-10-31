@@ -12,7 +12,6 @@ class Environment:
         self.grille = [[0 for _ in range(self.longueur)] for _ in range(self.largeur)] # On initialise une grille vide
         population = round(settings.taux_occupation *(self.longueur*self.largeur))
 
-
         pop_sharks = round(settings.nb_tunas*population)
         pop_tunas = round(settings.nb_tunas*population)
         if pop_sharks > self.largeur*self.longueur:
