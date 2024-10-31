@@ -1,7 +1,7 @@
 import random
 import time
 import settings
-import Shark
+from Fish import Fish
 
 class Environment:
     def __init__(self,largeur,longueur):
@@ -13,8 +13,8 @@ class Environment:
         population = round(settings.taux_occupation *(self.longueur*self.largeur))
 
 
-        pop_sharks = round(settings.nb_tunas*population)
-        pop_tunas = round(settings.nb_tunas*population)
+        pop_sharks = 1
+        pop_tunas = 1
         if pop_sharks > self.largeur*self.longueur:
             raise ValueError("Sharks population exceeds environment space")
 
@@ -23,7 +23,7 @@ class Environment:
             x = random.randint(0,self.longueur-1)
             y = random.randint(0,self.largeur-1)
             if (x,y) not in sharks_coord:
-                self.grille[x][y] = 'S'         #Shark.Shark(10)
+                self.grille[x][y] = 's'         #Shark.Shark(10)
                 sharks_coord.append((x,y))
                 pop_sharks -= 1
             else:
@@ -35,7 +35,7 @@ class Environment:
             x = random.randint(0,self.longueur-1)
             y = random.randint(0,self.largeur-1)
             if (x,y) not in tunas_coord and (x,y) not in sharks_coord:
-                self.grille[x][y] = 'T'
+                self.grille[x][y] = 't'
                 tunas_coord.append((x,y))
                 pop_tunas -= 1
             else:
@@ -56,12 +56,13 @@ class Environment:
     def toroidal_permission(self, x, y):
         return x % self.largeur, y % self.longueur
 
-ma_planete = Environment(5,5)
-print(ma_planete.init_grille())
-ma_planete.afficher_grille()
+# ma_planete = Environment(5,5)
+# print(ma_planete.init_grille())
+# ma_planete.afficher_grille()
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    ma_planete = Environment(5,5)
-    b = ma_planete.init_grille()[1]
-    print(b)
+# ma_planete = Environment(5,5)
+# Fish.movement(ma_planete)
+# b = ma_planete.init_grille()[1]
+#     print(b)

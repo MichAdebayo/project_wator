@@ -13,24 +13,29 @@ class Shark:
         north_position = (self.position[0], self.position[1] + 1)
         south_position = (self.position[0], self.position[1] - 1)
 
-        position_voisine = [east_position, west_position, north_position, south_position]
-        # random.choice(position_voisine)  
+        # position_voisine = [east_position, west_position, north_position, south_position]
+        position_voisine = [east_position]
+        # next = random.choice(position_voisine)  
 
+        for i in position_voisine:
+            self.position = i
+
+        '''
         for i in position_voisine:
             if 0 <= i[0] < len(grid) and 0 <= i[1] < len(grid[0]):  # limites de la grille
                 controle_case = grid[i[0]][i[1]]
 
-                if controle_case == ".":
+                if controle_case == "T":
+                    self.position = i
+                    self.energy += 1
+                    grid[i[0]][i[1]] = "."  # le thon est remplacé par une case vide
+                    
+
+                elif controle_case == ".":
                     self.energy -= 1
                     self.position = i
                     break
-
-                elif controle_case == "T":
-                    self.energy += 1
-                    self.position = i
-                    grid[i[0]][i[1]] = "."  # le thon est remplacé par une case vide
-                    break
-
+'''
     def check_energy(self):
         if self.energy == 0:
             grid[self.position[0]][self.position[1]] = "." #si requin n'a plus d'energie il est remplacé par une case vide (cad mort)

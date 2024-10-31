@@ -37,12 +37,19 @@ class Shark:
                 eat = random.choice(thon_possible)
                 self.energy += 1
                 self.position = eat
+                event_1 = eat 
                 grid[eat[0]][eat[1]] = "." 
 
             elif not thon_possible and mouv_possible :
                 mouv = random.choice(mouv_possible) 
+                event_1 = mouv
                 self.energy -= 1
                 self.position = mouv
+                if event_1 and self.compteur_tour == 3 :
+                    grid[eat[0]][eat[1]] = "S"
+                    self.position = "S"
+                    self.compteur_tour == 0
+
 
 
     def check_energy(self):
