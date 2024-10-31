@@ -42,9 +42,10 @@ class Shark:
             self.energy -= 1     
 
     def reproduce(self):
-        if self.compteur_tour % 5 == 0:
+        if self.compteur_tour == 12:
             grid[ancienne_position[0]][ancienne_position[1]] = "S" 
             grid[shark.position[0]][shark.position[1]] = "S"
+            self.compteur_tour = 0
 
     def check_energy(self):
         if self.energy == 0:
@@ -59,7 +60,7 @@ grid = [
 ]
 
 # initialisation requin avec energy et position
-shark = Shark(energy=15, position=(0, 0)) #(ligne3,colonne 0)
+shark = Shark(energy=50, position=(0, 0)) #(ligne3,colonne 0)
 
 while shark.energy > 0:
     
