@@ -24,7 +24,7 @@ class Environment:
             x = random.randint(0,self.longueur-1)
             y = random.randint(0,self.largeur-1)
             if (x,y) not in sharks_coord:
-                self.grille[x][y] =  'S'         #Shark.Shark(energy=10, position=(x,y)) 
+                self.grille[x][y] =  'S' #Shark.Shark(energy=10, position=(x,y))         #Shark.Shark(energy=10, position=(x,y)) 
                 sharks_coord.append((x,y))
                 pop_sharks -= 1
 
@@ -34,7 +34,7 @@ class Environment:
             y = random.randint(0,self.largeur-1)
 
             if (x,y) not in tunas_coord and (x,y) not in sharks_coord:
-                self.grille[x][y] = 'T'
+                self.grille[x][y] = 'T' #Fish.Fish(position=(x,y)) #'T'
                 tunas_coord.append((x,y))
                 pop_tunas -= 1
 
