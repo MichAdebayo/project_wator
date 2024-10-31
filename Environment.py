@@ -1,6 +1,8 @@
 import random
 import settings
 import time
+from Shark import *
+from Fish import *
 
 class Environment:
     def __init__(self,largeur,longueur):
@@ -22,7 +24,7 @@ class Environment:
             x = random.randint(0,self.longueur-1)
             y = random.randint(0,self.largeur-1)
             if (x,y) not in sharks_coord:
-                self.grille[x][y] = 'S'         #Shark.Shark(10)
+                self.grille[x][y] =  'S'         #Shark.Shark(energy=10, position=(x,y)) 
                 sharks_coord.append((x,y))
                 pop_sharks -= 1
 
