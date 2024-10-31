@@ -31,18 +31,20 @@ class Shark:
                     mouv_possible.append(i)
 
         if thon_possible: 
-            eat = random.choice(thon_possible) 
+            eat = random.choice(thon_possible)
             self.position = eat
             self.energy += 1
             grid[eat[0]][eat[1]] = "."
 
-        if mouv_possible:
+        elif mouv_possible:
             mouv = random.choice(mouv_possible) 
             self.position = mouv
-            self.energy -= 1     
+            self.energy -= 1
+
+                 
 
     def reproduce(self):
-        if self.compteur_tour == 12:
+        if self.compteur_tour == 5:
             grid[ancienne_position[0]][ancienne_position[1]] = "S" 
             grid[shark.position[0]][shark.position[1]] = "S"
             self.compteur_tour = 0
