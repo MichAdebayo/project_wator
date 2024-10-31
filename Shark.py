@@ -6,6 +6,10 @@ class Shark:
         self.position = position
         self.energy = energy
         self.compteur_tour = compteur_tour
+        self.name = 'S'
+
+    def __str__(self):
+        return self.name
 
     def check_and_move(self):
 
@@ -47,48 +51,59 @@ class Shark:
             grid[mouv[0]][mouv[1]] = "S"
             grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
 
+    # def reproduce(self):
+    #     if self.compteur_tour == 5:
+    #         grid[self.ancienne_position[0]][self.ancienne_position[1]] = "S" 
+    #         grid[shark.position[0]][shark.position[1]] = "S"
+    #         self.compteur_tour = 0
+
     def reproduce(self):
         if self.compteur_tour == 5:
-            grid[self.ancienne_position[0]][self.ancienne_position[1]] = "S" 
-            grid[shark.position[0]][shark.position[1]] = "S"
+            new_shark = Shark(energy=10, position=(self.ancienne_position[0],self.ancienne_position[1]))
+            grid[self.ancienne_position[0]][self.ancienne_position[1]] = new_shark
+            grid[shark.position[0]][shark.position[1]] = "S" 
             self.compteur_tour = 0
+            l_shark.append(new_shark)
+
 
     def check_energy(self):
         if self.energy == 0:
             grid[self.position[0]][self.position[1]] = "." #si requin n'a plus d'energie il est remplacé par une case vide (cad mort)
 
-# grid = [
-#     [".", ".", ".", ".", "T"],
-#     [".", "T", ".", ".", "."],
-#     [".", ".", ".", "T", "."],
-#     [".", ".", ".", ".", "."],
-#     ["T", ".", ".", ".", "T"]
-# ]
+grid = [
+    [".", ".", ".", ".", "T"],
+    [".", "T", ".", ".", "."],
+    [".", ".", ".", "T", "."],
+    [".", ".", ".", ".", "."],
+    ["T", ".", ".", ".", "T"]
+]
 
-# # initialisation requin avec energy et position
-# shark = Shark(energy=10, position=(0, 0)) #(ligne3,colonne 0)
+# initialisation requin avec energy et position
+shark = Shark(energy=10, position=(0, 0)) #(ligne3,colonne 0)
+l_shark = [shark]
 
-# while shark.energy > 0:
+while shark.energy > 0:
     
-#     # print("\033[H\033[J") #permet d'effacer chaque terminal
-#     print("\nPosition actuelle:", shark.position)
-#     print("Énergie actuelle:", shark.energy)
-#     print("Number of moves:", shark.compteur_tour)
-#     print("Grille:")
+    # print("\033[H\033[J") #permet d'effacer chaque terminal
+    print("\nPosition actuelle:", shark.position)
+    print("Énergie actuelle:", shark.energy)
+    print("Number of moves:", shark.compteur_tour)
+    print("Grille:")
 
-#     for ligne in grid:
-#         print("  ".join(ligne))
+    for ligne in grid:
+        # print("  ".join(ligne))
+        print(ligne)
 
-#     time.sleep(1)
+    time.sleep(1)
 
-    
-#     shark.check_and_move()
-#     # print(self.ancienne_position)
-#     print(shark.position)
-#     # grid[ancienne_position[0]][ancienne_position[1]] = "." 
-#     # grid[shark.position[0]][shark.position[1]] = "S"
-#     shark.reproduce()
-#     shark.check_energy()  
+    for shark in l_shark:
+        shark.check_and_move()
+        # print(self.ancienne_position)
+        print(shark.position)
+        # grid[ancienne_position[0]][ancienne_position[1]] = "." 
+        # grid[shark.position[0]][shark.position[1]] = "S"
+        shark.reproduce()
+        shark.check_energy()  
 
-# print("\nLe requin n'a plus d'énergie et ne peut plus se déplacer.")
-# print("Position finale:", shark.position)
+print("\nLe requin n'a plus d'énergie et ne peut plus se déplacer.")
+print("Position finale:", shark.position)

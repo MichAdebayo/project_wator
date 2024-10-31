@@ -13,7 +13,7 @@ class Environment:
         self.grille = [["." for _ in range(self.longueur)] for _ in range(self.largeur)] # On initialise une grille vide
         population = round(settings.taux_occupation *(self.longueur*self.largeur))
 
-        pop_sharks = round(settings.nb_sharks*population)
+        pop_sharks = 1 #round(settings.nb_sharks*population)
         pop_tunas = round(settings.nb_tunas*population)
 
         if pop_sharks > self.largeur*self.longueur:
@@ -24,7 +24,7 @@ class Environment:
             x = random.randint(0,self.longueur-1)
             y = random.randint(0,self.largeur-1)
             if (x,y) not in sharks_coord:
-                self.grille[x][y] =  'S' #Shark.Shark(energy=10, position=(x,y))         #Shark.Shark(energy=10, position=(x,y)) 
+                self.grille[x][y] =  Shark(energy=10, position=(x,y))  #' #Shark.Shark(energy=10, position=(x,y))         #Shark.Shark(energy=10, position=(x,y)) 
                 sharks_coord.append((x,y))
                 pop_sharks -= 1
 
