@@ -9,7 +9,7 @@ class Environment:
         self.longueur = longueur
 
     def init_grille(self):
-        self.grille = [[0 for i in range(self.longueur)] for j in range(self.largeur)] # On initialise une grille vide
+        self.grille = [[0 for _ in range(self.longueur)] for _ in range(self.largeur)] # On initialise une grille vide
         population = round(settings.taux_occupation *(self.longueur*self.largeur))
 
 
@@ -26,9 +26,6 @@ class Environment:
                 self.grille[x][y] = 'S'         #Shark.Shark(10)
                 sharks_coord.append((x,y))
                 pop_sharks -= 1
-            else:
-                pass
-                #print(f"il y a déja un requin ici ({(x,y)})")
 
         tunas_coord = []
         while pop_tunas > 0:
@@ -38,13 +35,11 @@ class Environment:
                 self.grille[x][y] = 'T'
                 tunas_coord.append((x,y))
                 pop_tunas -= 1
-            else:
-                pass
-                #print(f"il y a déja un requin ou un thon ici ({(x,y)})")
-        return self.grille, sharks_coord,tunas_coord
+
+        return self.grille
 
     def afficher_grille(self):
-        new_grille = [[0 for i in range(self.longueur)] for j in range(self.largeur)]
+        new_grille = [[0 for _ in range(self.longueur)] for _ in range(self.largeur)]
         for ligne in self.grille:        #affichage des élements de la grille
             print(ligne)
         print(self.longueur*3*'_')
@@ -53,8 +48,6 @@ class Environment:
         print(self.longueur*3*'_')
         time.sleep(0.25)
 
-    def toroidal_permission(self, x, y):
-        return x % self.largeur, y % self.longueur
 
 ma_planete = Environment(5,5)
 print(ma_planete.init_grille())
