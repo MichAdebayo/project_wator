@@ -2,42 +2,56 @@ import random
 import time
 
 class Shark:
-    def __init__(self, energy, position):
+    def __init__(self, energy, position, compteur_tour=1):
         self.position = position
         self.energy = energy
-
+        self.compteur_tour = compteur_tour
 
     def check_and_move(self):
-        east_position = (self.position[0] + 1, self.position[1])
-        west_position = (self.position[0] - 1, self.position[1])
-        north_position = (self.position[0], self.position[1] + 1)
-        south_position = (self.position[0], self.position[1] - 1)
+
+        east_position = ((self.position[0]) % len(grid), (self.position[1]+1) % len(grid))
+        west_position = ((self.position[0] )% len(grid), (self.position[1]-1 )% len(grid))
+        north_position = ((self.position[0]-1 )% len(grid), (self.position[1])% len(grid))
+        south_position = ((self.position[0]+1) % len(grid), (self.position[1]) % len(grid))
 
         position_voisine = [east_position, west_position, north_position, south_position]
-        # random.choice(position_voisine)  
+
+        thon_possible = []
+        mouv_possible = []
+        self.compteur_tour += 1
 
         for i in position_voisine:
+
             if 0 <= i[0] < len(grid) and 0 <= i[1] < len(grid[0]):  # limites de la grille
                 controle_case = grid[i[0]][i[1]]
 
-                if controle_case == ".":
-                    self.energy -= 1
-                    self.position = i
-                    break
+                if controle_case == "T": 
+                    thon_possible.append(i) 
+                elif controle_case == ".":
+                    mouv_possible.append(i)
 
-                elif controle_case == "T":
-                    self.energy += 1
-                    self.position = i
-                    grid[i[0]][i[1]] = "."  # le thon est remplacé par une case vide
-                    break
+        if thon_possible: 
+            eat = random.choice(thon_possible) 
+            self.position = eat
+            self.energy += 1
+            grid[eat[0]][eat[1]] = "."
+
+        if mouv_possible:
+            mouv = random.choice(mouv_possible) 
+            self.position = mouv
+            self.energy -= 1     
+
+    def reproduce(self):
+        if self.compteur_tour % 5 == 0:
+            grid[ancienne_position[0]][ancienne_position[1]] = "S" 
+            grid[shark.position[0]][shark.position[1]] = "S"
 
     def check_energy(self):
         if self.energy == 0:
             grid[self.position[0]][self.position[1]] = "." #si requin n'a plus d'energie il est remplacé par une case vide (cad mort)
 
-
 grid = [
-    ["T", ".", ".", ".", "T"],
+    [".", ".", ".", ".", "T"],
     [".", "T", ".", ".", "."],
     [".", ".", ".", "T", "."],
     [".", ".", ".", ".", "."],
@@ -45,27 +59,18 @@ grid = [
 ]
 
 # initialisation requin avec energy et position
+shark = Shark(energy=15, position=(0, 0)) #(ligne3,colonne 0)
 
-shark = Shark(energy=10, position=(0, 2))
-ancienne_position = (shark.position[0], shark.position[1])
-
-
-# Boucle while tant que requin est vivant
 while shark.energy > 0:
     
     # print("\033[H\033[J") #permet d'effacer chaque terminal
     print("\nPosition actuelle:", shark.position)
     print("Énergie actuelle:", shark.energy)
+    print("Number of moves:", shark.compteur_tour)
     print("Grille:")
-
-    
-
-
-
 
     for ligne in grid:
         print("  ".join(ligne))
-
 
     time.sleep(1)
 
@@ -76,8 +81,8 @@ while shark.energy > 0:
     print(shark.position)
     grid[ancienne_position[0]][ancienne_position[1]] = "." 
     grid[shark.position[0]][shark.position[1]] = "S"
+    shark.reproduce()
     shark.check_energy()  
 
 print("\nLe requin n'a plus d'énergie et ne peut plus se déplacer.")
 print("Position finale:", shark.position)
-print("Nombre de thons mangés:", shark.compteur_thon_mangés)
