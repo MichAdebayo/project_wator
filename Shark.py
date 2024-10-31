@@ -20,6 +20,9 @@ class Shark:
         mouv_possible = []
         self.compteur_tour += 1
 
+        ancienne_position = (shark.position[0], shark.position[1])
+        self.ancienne_position = ancienne_position
+
         for i in position_voisine:
 
             if 0 <= i[0] < len(grid) and 0 <= i[1] < len(grid[0]):  # limites de la grille
@@ -34,18 +37,19 @@ class Shark:
             eat = random.choice(thon_possible)
             self.position = eat
             self.energy += 1
-            grid[eat[0]][eat[1]] = "."
+            grid[eat[0]][eat[1]] = "S"
+            grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
 
         elif mouv_possible:
             mouv = random.choice(mouv_possible) 
             self.position = mouv
             self.energy -= 1
-
-                 
+            grid[mouv[0]][mouv[1]] = "S"
+            grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
 
     def reproduce(self):
         if self.compteur_tour == 5:
-            grid[ancienne_position[0]][ancienne_position[1]] = "S" 
+            grid[self.ancienne_position[0]][self.ancienne_position[1]] = "S" 
             grid[shark.position[0]][shark.position[1]] = "S"
             self.compteur_tour = 0
 
@@ -78,12 +82,11 @@ while shark.energy > 0:
     time.sleep(1)
 
     
-    ancienne_position = (shark.position[0], shark.position[1])
     shark.check_and_move()
-    print(ancienne_position)
+    # print(self.ancienne_position)
     print(shark.position)
-    grid[ancienne_position[0]][ancienne_position[1]] = "." 
-    grid[shark.position[0]][shark.position[1]] = "S"
+    # grid[ancienne_position[0]][ancienne_position[1]] = "." 
+    # grid[shark.position[0]][shark.position[1]] = "S"
     shark.reproduce()
     shark.check_energy()  
 
