@@ -3,11 +3,14 @@ import settings
 import time
 from Shark import *
 from Fish import *
+from animals import Animals
 
 class Environment:
+    instances_sharks = []                   # On initialise une liste qui répertorie les sharks de la grille
     def __init__(self,largeur,longueur):
         self.largeur = largeur
         self.longueur = longueur
+        # self.instances_sharks = []                   # On initialise une liste qui répertorie les sharks de la grille
 
     def init_grille(self):
         self.grille = [["." for _ in range(self.longueur)] for _ in range(self.largeur)] # On initialise une grille vide
@@ -24,7 +27,10 @@ class Environment:
             x = random.randint(0,self.longueur-1)
             y = random.randint(0,self.largeur-1)
             if (x,y) not in sharks_coord:
-                self.grille[x][y] =  Shark(energy=10, position=(x,y))  #' #Shark.Shark(energy=10, position=(x,y))         #Shark.Shark(energy=10, position=(x,y)) 
+                new =  Shark(energy=10, position=(x,y))  #' #Shark.Shark(energy=10, position=(x,y))
+                self.grille[x][y] =  new
+                Animals.instances_sharks.append(new)
+
                 sharks_coord.append((x,y))
                 pop_sharks -= 1
 
