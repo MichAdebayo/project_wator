@@ -38,20 +38,4 @@ class Environment:
                 tunas_coord.append((x,y))
                 pop_tunas -= 1
 
-        return self.grille
-
-    def afficher_grille(self):
-        new_grille = [[0 for _ in range(self.longueur)] for _ in range(self.largeur)]
-        for ligne in self.grille:        #affichage des élements de la grille
-            print(ligne)
-        print(self.longueur*3*'_')
-        for ligne in new_grille:
-            print(ligne)       
-        print(self.longueur*3*'_')
-        time.sleep(0.25)
-
-# if __name__ == "__main__":
-
-#     ma_planete = Environment(5,5)
-#     b = ma_planete.init_grille()[1]
-#     print(ma_planete)
+        return self.grille, sharks_coord, tunas_coord
