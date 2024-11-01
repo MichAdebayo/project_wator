@@ -19,6 +19,9 @@ class Fish:
         mouv_impossible = []
         self.compteur_tour += 1
 
+        ancienne_position = (fish.position[0], fish.position[1])
+        self.ancienne_position = ancienne_position
+        
         for i in position_voisine:
 
             if 0 <= i[0] < len(grid) and 0 <= i[1] < len(grid[0]):  # limites de la grille
@@ -33,13 +36,16 @@ class Fish:
             move = random.choice(mouv_possible) 
             self.position = move
             grid[move[0]][move[1]] = "T"
+            grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
 
-        if mouv_impossible:
+        elif mouv_impossible and len(mouv_impossible)!=4:
             new_mouv = random.choice(mouv_possible) 
-            self.position = new_mouv  
+            self.position = new_mouv
+            grid[new_mouv[0]][new_mouv[1]] = "T"
+            grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
 
     def reproduce(self):
-        if self.compteur_tour == 5:
+        if self.compteur_tour == 2:
             grid[ancienne_position[0]][ancienne_position[1]] = "T" 
             grid[fish.position[0]][fish.position[1]] = "T"
             self.compteur_tour = 0
@@ -69,12 +75,12 @@ class Fish:
 #     time.sleep(1)
 
     
-#     ancienne_position = (fish.position[0], fish.position[1])
-#     fish.check_and_move()
-#     print(ancienne_position)
-#     print(fish.position)
-#     grid[ancienne_position[0]][ancienne_position[1]] = "." 
-#     grid[fish.position[0]][fish.position[1]] = "T"
-#     fish.reproduce() 
+    ancienne_position = (fish.position[0], fish.position[1])
+    fish.check_and_move()
+    # print(ancienne_position)
+    print(fish.position)
+    # grid[ancienne_position[0]][ancienne_position[1]] = "." 
+    # grid[fish.position[0]][fish.position[1]] = "T"
+    fish.reproduce() 
 
 # print("Position finale:", fish.position)
