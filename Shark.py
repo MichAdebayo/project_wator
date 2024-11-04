@@ -6,6 +6,11 @@ class Shark:
         self.position = position
         self.energy = energy
         self.compteur_tour = compteur_tour
+        self.name = 'S'
+        
+    def __str__(self) -> str:
+        return self.name
+
 
     def check_and_move(self):
 
@@ -34,10 +39,10 @@ class Shark:
                     mouv_possible.append(i)
 
         if thon_possible: 
-            eat = random.choice(thon_possible)
-            self.position = eat
+            self.eat = random.choice(thon_possible)
+            self.position = self.eat
             self.energy += 1
-            grid[eat[0]][eat[1]] = "S"
+            grid[self.eat[0]][self.eat[1]] = "S"
             grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
 
         elif mouv_possible:
@@ -48,9 +53,12 @@ class Shark:
             grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
 
     def reproduce(self):
+        random_position = random.choice(self.eat)
+
         if self.compteur_tour == 5:
-            grid[self.ancienne_position[0]][self.ancienne_position[1]] = "S" 
-            grid[shark.position[0]][shark.position[1]] = "S"
+            new_shark = Shark(energy=10, position=(self.ancienne_position[0],self.ancienne_position[1]))
+            grid[self.ancienne_position[0]][self.ancienne_position[1]] = new_shark
+            grid[shark.position[0]][shark.position[1]] = "S" 
             self.compteur_tour = 0
 
     def check_energy(self):
@@ -77,7 +85,8 @@ while shark.energy > 0:
     print("Grille:")
 
     for ligne in grid:
-        print("  ".join(ligne))
+        # print("  ".join(ligne))
+        print(ligne)
 
     time.sleep(1)
 
