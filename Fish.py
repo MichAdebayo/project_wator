@@ -44,37 +44,37 @@ class Fish:
             grid[fish.position[0]][fish.position[1]] = "T"
             self.compteur_tour = 0
 
-# grid = [
-#     [".", ".", ".", ".", "."],
-#     [".", ".", ".", ".", "."],
-#     [".", ".", ".", ".", "."],
-#     [".", ".", ".", ".", "."],
-#     [".", ".", ".", ".", "."]
-# ]
+grid = [
+    [".", ".", ".", ".", "."],
+    [".", ".", ".", ".", "."],
+    [".", ".", ".", ".", "."],
+    [".", ".", ".", ".", "."],
+    [".", ".", ".", ".", "."]
+]
 
-# # initialisation requin avec energy et position
-# fish = Fish(position=(0, 3)) #(ligne3,colonne 0)
+# initialisation requin avec energy et position
+fish = Fish(position=(0, 3)) #(ligne3,colonne 0)
 
 
-# while True:
+while True:
     
-#     # print("\033[H\033[J") #permet d'effacer chaque terminal
-#     print("\nPosition actuelle:", fish.position)
-#     print("Number of moves:", fish.compteur_tour)
-#     print("Grille:")
+    # print("\033[H\033[J") #permet d'effacer chaque terminal
+    print("\nPosition actuelle:", fish.position)
+    print("Number of moves:", fish.compteur_tour)
+    print("Grille:")
 
-#     for ligne in grid:
-#         print("  ".join(ligne))
+    for ligne in grid:
+        print("  ".join(ligne))
 
-#     time.sleep(1)
+    time.sleep(1)
 
     
-#     ancienne_position = (fish.position[0], fish.position[1])
-#     fish.check_and_move()
-#     print(ancienne_position)
-#     print(fish.position)
-#     grid[ancienne_position[0]][ancienne_position[1]] = "." 
-#     grid[fish.position[0]][fish.position[1]] = "T"
-#     fish.reproduce() 
+    ancienne_position = (fish.position[0], fish.position[1])
+    fish.check_and_move()
+    print(ancienne_position)
+    print(fish.position)
+    grid[ancienne_position[0]][ancienne_position[1]] = "." 
+    grid[fish.position[0]][fish.position[1]] = "T"
+    fish.reproduce() 
 
-# print("Position finale:", fish.position)
+print("Position finale:", fish.position)
