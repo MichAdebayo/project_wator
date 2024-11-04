@@ -1,7 +1,5 @@
-class Settings:
-
-    ocean_width = 50
-    ocean_height = 50
-    nb_fishes = (ocean_width * ocean_height) * 0.2
-    nb_sharks = nb_fishes * 0.3
-    nb_tunas = nb_fishes * 0.7
+taux_occupation = 0.20
+nb_sharks = 0.3
+nb_tunas = 0.7
+largeur = 3
+longueur = 3
