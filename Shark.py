@@ -84,7 +84,10 @@ grid = [
 
 # initialisation requin avec energy et position
 shark = Shark(energy=10, position=(0, 0)) #(ligne3,colonne 0)
+<<<<<<< HEAD
 l_shark = [shark]
+=======
+>>>>>>> a966ef7 (testing shark.py)
 
 while shark.energy > 0:
     
@@ -95,6 +98,7 @@ while shark.energy > 0:
     print("Grille:")
 
     for ligne in grid:
+<<<<<<< HEAD
         # print("  ".join(ligne))
         print(ligne)
 
@@ -108,6 +112,20 @@ while shark.energy > 0:
         # grid[shark.position[0]][shark.position[1]] = "S"
         shark.reproduce()
         shark.check_energy()  
+=======
+        print("  ".join(ligne))
+
+    time.sleep(1)
+
+    
+    shark.check_and_move()
+    # print(self.ancienne_position)
+    print(shark.position)
+    # grid[ancienne_position[0]][ancienne_position[1]] = "." 
+    # grid[shark.position[0]][shark.position[1]] = "S"
+    shark.reproduce()
+    shark.check_energy()  
+>>>>>>> a966ef7 (testing shark.py)
 
 print("\nLe requin n'a plus d'énergie et ne peut plus se déplacer.")
 print("Position finale:", shark.position)
