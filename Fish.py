@@ -1,4 +1,5 @@
 import random  # Provides functions for generating random numbers
+from colorama import Fore, Style
 
 class Fish:
     """
@@ -47,7 +48,7 @@ class Fish:
         self.grid = grid
         self.position = position
         self.turn_counter = turn_counter
-        self.name = 'T'  
+        self.name = f"{Fore.GREEN}F{Style.RESET_ALL}"
         self.instances_fishes = instances_fishes
 
     def __str__(self):
@@ -102,14 +103,14 @@ class Fish:
 
             # Ensure the position is within the grid boundaries
             if 0 <= pos[0] < len(self.grid) and 0 <= pos[1] < len(self.grid[0]):  # limits of the grid
-                controle_case = self.grid[pos[0]][pos[1]]
+                control_case = self.grid[pos[0]][pos[1]]
 
                 # If the cell is empty, add it to the possible movements
-                if controle_case == ".": 
+                if control_case == ".": 
                     self.move_possible.append(pos) 
 
                 # If there's another fish, add to impossible movements (occupied)
-                elif isinstance(controle_case, Fish):
+                elif isinstance(control_case, Fish):
                     self.move_impossible.append(pos)
 
         # If there are possible moves, choose one randomly and update position
