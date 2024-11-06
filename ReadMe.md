@@ -1,4 +1,4 @@
-# WATOR Simulation
+# Wa-Tor Simulation
 
 ## Overview
 
