@@ -1,28 +1,7 @@
-from Environment import *
-from animals import Animals
-import time
+from Environment import *  # Import all classes and functions from the Environment module
+from Shark import *        # Import all classes and functions from the Shark module
+from Fish import *         # Import all classes and functions from the Fish module
 
-ma_planete = Environment(5,5)
-grid = ma_planete.init_grille()
-t= 0 
-
-while t < 5:
-    for shark in Animals.instances_sharks:
-        print(type(shark))
-        print(f"t = {t}")
-        for line in grid:
-            print(line)
-        t +=1
-        time.sleep(1)
-
-
-
-# while t < 5:
-#     print(f"t = {t}")
-#     for line in grid:
-#         print(line)
-#     t +=1
-#     time.sleep(1)
-        # print("  ".join(line))
-    # ma_planete.afficher_grille()
+# Initialize the ocean simulation with a grid size of 20x20
+ocean = Ocean(40, 40)
 

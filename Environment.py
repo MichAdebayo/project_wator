@@ -1,74 +1,201 @@
-import random
-import time
-from Shark import *
-from Fish import *
-from animals import Animals
-from settings import *
+import random  # Provides functions for generating random numbers
+import time    # Provides time-related functions
+import settings  # Custom settings module for configuration
+from Fish import Fish  # Importing the Fish class from the Fish module
+from Shark import Shark  # Importing the Shark class from the Shark module
 
 class Ocean:
-    def __init__(self,largeur,longueur):
-        self.largeur = largeur
-        self.longueur = longueur
+    """
+    Represents an ocean environment for simulating the interactions between fish and sharks.
 
-        self.grille = [["." for _ in range(self.longueur)] for _ in range(self.largeur)] # On initialise une grille vide
-        self.instances_sharks = []                  # On initialise une liste qui répertorie les sharks de la grille
+    This class initializes the ocean grid, populates it with fish and sharks, and manages their movement and reproduction during the simulation.
+
+    Args:
+        width (int): The width of the ocean grid.
+        height (int): The length of the ocean grid.
+
+    Attributes:
+        width (int): The width of the ocean grid.
+        height (int): The length of the ocean grid.
+        grid (list): A 2D list representing the ocean grid.
+        instances_fishes (list): A list to hold instances of fish in the ocean.
+        instances_sharks (list): A list to hold instances of sharks in the ocean.
+    """
+    def __init__(self, width : int, height : int) -> None:       
+        """
+        Initializes the Ocean class with specified dimensions and starts the simulation.
+
+        This constructor sets up the ocean grid based on the provided width and length, initializes empty lists for fish and shark instances, and begins the simulation process.
+
+        Args:
+            largeur (int): The width of the ocean grid.
+            longueur (int): The length of the ocean grid.
+
+        Returns:
+            None
+        """
+
+        # Set the width of the ocean grid
+        self.width = width
+
+        # Set the height of the ocean grid
+        self.height = height
+
+        # Initialize the ocean grid with empty cells represented by "."
+        self.grid = [["." for _ in range(self.height)] for _ in range(self.width)]
+
+        # Create an empty list to hold instances of fish in the ocean
         self.instances_fishes = []
 
-        self.init_grille()
+        # Create an empty list to hold instances of sharks in the ocean
+        self.instances_sharks = []
 
-    def init_grille(self):
-        pop_sharks = 1 # round(Settings.nb_sharks)
-        pop_tunas = 3 # round(Settings.nb_tunas)
+        # Start the simulation process
+        self.start_simulation()
 
-        sharks_coord = []
-        while pop_sharks > 0:
-            x = random.randint(0,self.longueur-1)
-            y = random.randint(0,self.largeur-1)
-            if (x,y) not in sharks_coord:
-                new_shark = Shark(energy=10, position=(x,y), grille = self.grille)
-                self.grille[x][y] = new_shark
-                self.instances_sharks.append(new_shark)
 
-                sharks_coord.append((x,y))
-                pop_sharks -= 1
+    def init_grid(self) -> None:
+        """
+        Initializes the ocean grid by populating it with a specified number of fish and sharks.
 
-        tunas_coord = []
-        while pop_tunas > 0:
-            x = random.randint(0,self.longueur-1)
-            y = random.randint(0,self.largeur-1)
+        This method randomly places fish and sharks in the grid, ensuring that they occupy empty spaces. It sets the initial population of fish and sharks.
 
-            if (x,y) not in tunas_coord and (x,y) not in sharks_coord:
+        Args:
+            None
 
-                new_fish = Fish(position = (x,y))
-                self.grille[x][y] = new_fish
+        Returns:
+            None
+        """
+
+        # Calculate the total population based on the occupation rate and grid size
+        population = round(settings.occupation_rate * (self.height * self.width))
+
+        # Determine the number of sharks and fish based on the calculated population
+        pop_sharks = round(settings.number_of_sharks * population)
+        pop_fish = round(settings.number_of_fish * population)
+
+        # Check if the shark population exceeds the available space in the environment
+        if pop_sharks > self.width * self.height:
+            raise ValueError("Sharks population exceeds environment space")
+
+        # Populate the grid with fish until the desired population is reached
+        while pop_fish > 0:
+
+            # Randomly select a position in the grid
+            x, y = random.randint(0, self.width - 1), random.randint(0, self.height - 1)
+
+            # Check if the selected position is empty
+            if self.grid[x][y] == ".":
+
+                # Create a new fish instance and place it in the grid
+                new_fish = Fish(position=(x, y), instances_fishes=self.instances_fishes, grid=self.grid)
+                self.grid[x][y] = new_fish
                 self.instances_fishes.append(new_fish)
 
+                # Decrease the remaining fish to be placed
+                pop_fish -= 1
 
-                pop_tunas -= 1
+        # Populate the grid with sharks until the desired population is reached
+        while pop_sharks > 0:
 
-        return self.grille, sharks_coord, tunas_coord
+            # Randomly select a position in the grid
+            x, y = random.randint(0, self.width - 1), random.randint(0, self.height - 1)
 
-    def mouv_ok(self):
+            # Check if the selected position is empty
+            if self.grid[x][y] == ".":
 
-        for shark in self.instances_sharks :
-            shark.check_and_move()
-            shark.reproduce()
-            shark.energy()
-            print(shark.position)
-            
-        
+                # Create a new shark instance and place it in the grid
+                new_shark = Shark(energy=7, position=(x, y), instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
+                self.grid[x][y] = new_shark
+                self.instances_sharks.append(new_shark)
+
+                # Decrease the remaining sharks to be placed
+                pop_sharks -= 1
+
+
+    def move(self) -> None:      
+        """
+        Updates the positions of fish and sharks in the ocean.
+
+        This method iterates through all fish and sharks, allowing them to check their surroundings, move, reproduce, and for sharks to check their energy levels.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+
+        # Iterate through all fish in the ocean
         for fish in self.instances_fishes:
+
+            # Check the fish's surroundings and move to a new position if possible
             fish.check_and_move()
+
+            # Allow the fish to reproduce if conditions are met
             fish.reproduce()
-            print(fish.position)
+
+        # Iterate through all sharks in the ocean
+        for shark in self.instances_sharks:
+
+            # Check the shark's surroundings and move to a new position if possible
+            shark.check_and_move()
+
+            # Allow the shark to reproduce if conditions are met
+            shark.reproduce()
+
+            # Check the shark's energy level and determine if it can continue to survive
+            shark.check_energy()
 
 
-if __name__ == "__main__":
-    my_ocean = Ocean(5,5)
+    def start_simulation(self) -> None: 
+        """
+        Begins the simulation of the ocean environment.
 
+        This method initializes the grid, then continuously updates the state of the ocean by moving fish and sharks, printing the current state, and checking for the end conditions of the simulation.
 
+        Args:
+            None
 
+        Returns:
+            None
+        """
 
+        # Initialize the ocean grid with fish and sharks
+        self.init_grid()
 
+        # Start the simulation time counter
+        chronos = 0 + 1
 
+        # Continue the simulation while there are sharks with energy
+        while any(shark.check_energy() == False for shark in self.instances_sharks):
+            
+            # Update the positions and states of fish and sharks
+            self.move()
+
+            # Print the current state of the ocean grid
+            for line in self.grid:
+                print(" ".join(str(cell) for cell in line))
+            print("\n")
+
+            # Display the current simulation time and population counts
+            print("Chronos :", chronos)
+            print("Sharks :" , len(self.instances_sharks))
+            print("Fishes : ", len(self.instances_fishes))
+
+            # Pause the simulation for a short duration to visualize the changes
+            time.sleep(0.1)
+
+            # Increment the simulation time counter
+            chronos += 1
+
+            # Check if all sharks have perished
+            if not self.instances_sharks:
+                print("All sharks have perished. Fish dominate the ocean!")
+                break
+            
+            # Check if all fishes have been eaten
+            elif not self.instances_fishes:
+                print("All fishes have been eaten. Sharks dominate the ocean!")
+                break
 
