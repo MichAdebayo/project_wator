@@ -5,25 +5,23 @@ from Fish import Fish  # Importing the Fish class from the Fish module
 from Shark import Shark  # Importing the Shark class from the Shark module
 
 class Ocean:
-    
     """
     Represents an ocean environment for simulating the interactions between fish and sharks.
 
     This class initializes the ocean grid, populates it with fish and sharks, and manages their movement and reproduction during the simulation.
 
     Args:
-        largeur (int): The width of the ocean grid.
-        longueur (int): The length of the ocean grid.
+        width (int): The width of the ocean grid.
+        height (int): The length of the ocean grid.
 
     Attributes:
-        largeur (int): The width of the ocean grid.
-        longueur (int): The length of the ocean grid.
+        width (int): The width of the ocean grid.
+        height (int): The length of the ocean grid.
         grid (list): A 2D list representing the ocean grid.
         instances_fishes (list): A list to hold instances of fish in the ocean.
         instances_sharks (list): A list to hold instances of sharks in the ocean.
     """
-    def __init__(self, width: int, height: int) -> None:
-        
+    def __init__(self, width : int, height : int) -> None:       
         """
         Initializes the Ocean class with specified dimensions and starts the simulation.
 
@@ -57,7 +55,6 @@ class Ocean:
 
 
     def init_grid(self) -> None:
-
         """
         Initializes the ocean grid by populating it with a specified number of fish and sharks.
 
@@ -108,7 +105,7 @@ class Ocean:
             if self.grid[x][y] == ".":
 
                 # Create a new shark instance and place it in the grid
-                new_shark = Shark(energy=10, position=(x, y), instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
+                new_shark = Shark(energy=7, position=(x, y), instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
                 self.grid[x][y] = new_shark
                 self.instances_sharks.append(new_shark)
 
@@ -116,8 +113,7 @@ class Ocean:
                 pop_sharks -= 1
 
 
-    def move(self) -> None:
-        
+    def move(self) -> None:      
         """
         Updates the positions of fish and sharks in the ocean.
 
@@ -152,8 +148,7 @@ class Ocean:
             shark.check_energy()
 
 
-    def start_simulation(self) -> None:
-        
+    def start_simulation(self) -> None: 
         """
         Begins the simulation of the ocean environment.
 
