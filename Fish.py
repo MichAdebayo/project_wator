@@ -46,7 +46,7 @@ class Fish:
             self.position = new_move
             self.grid[self.position[0]][self.position[1]] = self
             self.grid[ancienne_position[0]][ancienne_position[1]] = "."
-
+    
     def reproduce(self):
         if self.compteur_tour == 5 and self.mouv_possible:
             baby_fish = Fish(position=self.ancienne_position, instances_fishes=self.instances_fishes, grid=self.grid)
