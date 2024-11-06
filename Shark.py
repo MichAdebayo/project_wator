@@ -1,131 +1,98 @@
 import random
-import time
-from animals import Animals
+from Fish import *
 
-class Shark:
 
-    def __init__(self, energy, position, compteur_tour=1):
-        self.position = position
+class Shark(Fish):
+    def __init__(self, energy, position, grid, instances_fishes, instances_sharks, compteur_tour=0):
+        super().__init__(position, grid, instances_fishes)
         self.energy = energy
         self.compteur_tour = compteur_tour
         self.name = 'S'
-        Animals.instances_sharks.append(self)
+        self.instances_fishes = instances_fishes 
+        self.instances_sharks = instances_sharks
 
     def __str__(self):
         return self.name
 
     def check_and_move(self):
-
-        east_position = ((self.position[0]) % len(grid), (self.position[1]+1) % len(grid))
-        west_position = ((self.position[0] )% len(grid), (self.position[1]-1 )% len(grid))
-        north_position = ((self.position[0]-1 )% len(grid), (self.position[1])% len(grid))
-        south_position = ((self.position[0]+1) % len(grid), (self.position[1]) % len(grid))
-
-        position_voisine = [east_position, west_position, north_position, south_position]
+        directions = [
+            ((self.position[0]) % len(self.grid), (self.position[1] + 1) % len(self.grid)),  # east
+            ((self.position[0]) % len(self.grid), (self.position[1] - 1) % len(self.grid)),  # west
+            ((self.position[0] + 1) % len(self.grid), (self.position[1]) % len(self.grid)),  # north
+            ((self.position[0] - 1) % len(self.grid), (self.position[1]) % len(self.grid))   # south
+        ]
 
         thon_possible = []
-        mouv_possible = []
+        self.move_possible = []
+        move_impossible = []
         self.compteur_tour += 1
 
-        ancienne_position = (shark.position[0], shark.position[1])
+        ancienne_position = self.position
         self.ancienne_position = ancienne_position
 
-        for i in position_voisine:
+        for pos in directions:
+            if 0 <= pos[0] < len(self.grid) and 0 <= pos[1] < len(self.grid[0]):  # limits of the grid
+                controle_case = self.grid[pos[0]][pos[1]]
 
-            if 0 <= i[0] < len(grid) and 0 <= i[1] < len(grid[0]):  # limites de la grille
-                controle_case = grid[i[0]][i[1]]
+                if isinstance(controle_case, Fish) and not isinstance(controle_case, Shark): 
+                    thon_possible.append(pos)
+                if controle_case == ".":
+                    self.move_possible.append(pos)
+                if isinstance(controle_case, Shark): 
+                    move_impossible.append(pos)
 
-                if controle_case == "T": 
-                    thon_possible.append(i) 
-                elif controle_case == ".":
-                    mouv_possible.append(i)
+        # print(f"Shark at {self.position} has possible moves: {move_possible}, fish to eat: {thon_possible}")
+        
+        if thon_possible:
+            eat_position = random.choice(thon_possible)
+            if eat_position and isinstance(self.grid[eat_position[0]][eat_position[1]], Fish) and not isinstance(self.grid[eat_position[0]][eat_position[1]], Shark):
+                fish_to_eat = self.grid[eat_position[0]][eat_position[1]]
+                self.instances_fishes.remove(fish_to_eat) 
+                self.position = eat_position
+                self.grid[eat_position[0]][eat_position[1]] = self
+                # self.energy += 2
+                self.grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."      
 
-        if thon_possible: 
-            eat = random.choice(thon_possible) 
-            self.position = eat
-            self.energy += 1
-            grid[eat[0]][eat[1]] = "S"
-            grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
+        elif self.move_possible:
+            new_move = random.choice(self.move_possible)
+            self.position = new_move
+            self.grid[self.position[0]][self.position[1]] = self
+            self.energy -= 1  
+            self.grid[ancienne_position[0]][self.ancienne_position[1]] = "."
 
-        elif mouv_possible:
-            mouv = random.choice(mouv_possible) 
-            self.position = mouv
-            self.energy -= 1
-            grid[mouv[0]][mouv[1]] = "S"
-            grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
+        elif move_impossible and len(move_impossible) != 4:
+            alt_move = random.choice(self.move_possible)
+            self.position = alt_move
+            self.grid[self.position[0]][self.position[1]] = self
+            self.energy -= 1  
+            self.grid[ancienne_position[0]][self.ancienne_position[1]] = "."
 
-    # def reproduce(self):
-    #     if self.compteur_tour == 5:
-    #         grid[self.ancienne_position[0]][self.ancienne_position[1]] = "S" 
-    #         grid[shark.position[0]][shark.position[1]] = "S"
-    #         self.compteur_tour = 0
+        else: 
+            self.grid[ancienne_position[0]][ancienne_position[1]] = self
+
+        # else:
+        #     empty_cells = [(i, j) for i in range(len(self.grid)) for j in range(len(self.grid[0])) if self.grid[i][j] == "."]
+        #     if empty_cells:
+        #         random_empty_cell = random.choice(empty_cells)
+        #         self.position = random_empty_cell
+        #         self.grid[self.position[0]][self.position[1]] = self
+        #         self.grid[ancienne_position[0]][ancienne_position[1]] = "."
+        #         print(f"Shark teleported to empty cell at {random_empty_cell}")
+
 
     def reproduce(self):
-        if self.compteur_tour == 5:
-            new_shark = Shark(energy=10, position=(self.ancienne_position[0],self.ancienne_position[1]))
-            grid[self.ancienne_position[0]][self.ancienne_position[1]] = new_shark
-            grid[shark.position[0]][shark.position[1]] = "S" 
+        if self.compteur_tour == 15 and self.move_possible:
+            # parent_shark_new_position = random.choice(self.mouv_possible)
+            #if self.grid[self.ancienne_position[0]][self.ancienne_position[1]] == ".":
+            baby_shark = Shark(energy=7, position=self.ancienne_position, instances_fishes = self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
+            self.instances_sharks.append(baby_shark)
+            self.grid[self.ancienne_position[0]][self.ancienne_position[1]] = baby_shark
             self.compteur_tour = 0
-            l_shark.append(new_shark)
-
+        #     return baby_shark
+        # return None
 
     def check_energy(self):
         if self.energy == 0:
-            grid[self.position[0]][self.position[1]] = "." #si requin n'a plus d'energie il est remplacé par une case vide (cad mort)
-            Animals.instances_sharks.remove(self)
-
-grid = [
-    [".", ".", ".", ".", "T"],
-    [".", "T", ".", ".", "."],
-    [".", ".", ".", "T", "."],
-    [".", ".", ".", ".", "."],
-    ["T", ".", ".", ".", "T"]
-]
-
-# initialisation requin avec energy et position
-shark = Shark(energy=10, position=(0, 0)) #(ligne3,colonne 0)
-<<<<<<< HEAD
-l_shark = [shark]
-=======
->>>>>>> a966ef7 (testing shark.py)
-
-while shark.energy > 0:
-    
-    # print("\033[H\033[J") #permet d'effacer chaque terminal
-    print("\nPosition actuelle:", shark.position)
-    print("Énergie actuelle:", shark.energy)
-    print("Number of moves:", shark.compteur_tour)
-    print("Grille:")
-
-    for ligne in grid:
-<<<<<<< HEAD
-        # print("  ".join(ligne))
-        print(ligne)
-
-    time.sleep(1)
-
-    for shark in l_shark:
-        shark.check_and_move()
-        # print(self.ancienne_position)
-        print(shark.position)
-        # grid[ancienne_position[0]][ancienne_position[1]] = "." 
-        # grid[shark.position[0]][shark.position[1]] = "S"
-        shark.reproduce()
-        shark.check_energy()  
-=======
-        print("  ".join(ligne))
-
-    time.sleep(1)
-
-    
-    shark.check_and_move()
-    # print(self.ancienne_position)
-    print(shark.position)
-    # grid[ancienne_position[0]][ancienne_position[1]] = "." 
-    # grid[shark.position[0]][shark.position[1]] = "S"
-    shark.reproduce()
-    shark.check_energy()  
->>>>>>> a966ef7 (testing shark.py)
-
-print("\nLe requin n'a plus d'énergie et ne peut plus se déplacer.")
-print("Position finale:", shark.position)
+            self.grid[self.position[0]][self.position[1]] = "."
+            return True
+        return False
