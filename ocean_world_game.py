@@ -1,8 +1,8 @@
 import pygame
 import random
 import settings
-from Fish import Fish
-from Shark import Shark
+from fish import Fish
+from shark import Shark
 
 CELL_SIZE = 30
 

@@ -1,90 +1,114 @@
-# Wa-Tor Simulation
+# Projet Wator : Simulation de l'Écosystème Marin
 
-## Overview
+Ce projet simule l'écosystème marin en modélisant les comportements des requins et des poissons dans une grille représentant l'océan. Le but est de comprendre les interactions entre prédateurs et proies et d'observer l'évolution d'une population dans un environnement dynamique.
 
-The WATOR simulation is a simple ecosystem model that simulates the interactions between two species: fish and sharks. The simulation is based on a grid where fish and sharks move, reproduce, and interact with each other. The goal is to observe how these species coexist and how their populations change over time.
+![Texte alternatif](./photo.webp)
 
-## Table of Contents
 
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Code Structure](#code-structure)
-- [Classes](#classes)
-  - [Fish](#fish)
-  - [Shark](#shark)
-- [Contributing](#contributing)
-- [License](#license)
 
-## Features
+## Table des Matières
 
-- **Grid-based Simulation**: The ocean is represented as a grid where each cell can be empty, contain a fish, or contain a shark.
-- **Movement**: Fish and sharks can move in four directions (north, south, east, west) and wrap around the grid edges.
-- **Reproduction**: Both fish and sharks can reproduce under certain conditions, increasing their populations.
-- **Energy Management**: Sharks have an energy level that decreases with each move and increases when they eat fish. If their energy reaches zero, they are removed from the simulation.
-- **Dynamic Interaction**: Sharks can eat fish, affecting the populations of both species.
+1. [Contexte et Objectifs](#contexte-et-objectifs)
+2. [Structure du Projet](#structure-du-projet)
+3. [Fonctionnalités des Classes](#fonctionnalités-des-classes)
+    - [Classe Fish](#classe-fish)
+    - [Classe Shark](#classe-shark)
+    - [Classe Ocean](#classe-océan)
 
-## Installation
+4. [Lancement de la Simulation](#lancement-de-la-simulation)
+5. [Notes supplémentaires](#notes-supplémentaires)
+6. [Contributeurs](#contributeurs)
+7. [Remerciements](#remerciements)
 
-To run the WATOR simulation, clone the repository and install the required dependencies. You can use the following commands:
+---
 
-```bash
-git clone https://github.com/yourusername/wator-simulation.git
-cd wator-simulation
+### Contexte et Objectifs
 
-Make sure you have Python installed on your machine. You can run the simulation using Python 
+Le projet Wa-Tor est une simulation inspirée de la théorie des automates cellulaires, où une grille représente l'océan, et chaque cellule peut contenir un poisson, un requin ou rester vide. Les objectifs principaux de ce projet sont d'analyser :
+- La dynamique des populations de proies (poissons) et de prédateurs (requins).
+- L'impact de la reproduction et de la consommation d'énergie sur la survie des individus.
 
-3. Usage
+### Structure du Projet
 
-To start the simulation, run the main.py file:
-python [main.py](VALID_FILE)
+Le projet est organisé en plusieurs fichiers :
 
-You can modify the parameters such as the grid size, initial populations of fish and sharks, and other settings in the settings.py file.
+- **fish.py** : Définition de la classe `Fish`, qui gère les comportements de base des poissons (déplacement, reproduction).
+- **shark.py** : Définition de la classe `Shark`, qui hérite de la classe `Fish` et ajoute des fonctionnalités spécifiques aux requins (manger, gérer l'énergie).
+- **environnement.py** : Gère la création et l'affichage de la grille océanique.
+- **main.py** : Point d'entrée du programme pour initialiser la grille et lancer la simulation.
+- **settings.py** : Contient les paramètres de la simulation, comme la proportion de la grille occupée par les poissons et les requins, et la taille de la grille en largeur et hauteur. 
 
-Code Structure
+### Fonctionnalités des Classes
 
-The project consists of the following main files:
+#### Classe `Fish`
 
-- main.py: The entry point of the simulation.
-- settings.py: Configuration file for simulation parameters.
-- Fish.py: Contains the Fish class, which defines the behavior of fish in the simulation.
-- Shark.py: Contains the Shark class, which defines the behavior of sharks in the simulation.
-- Environment.py: Manages the ocean environment and the interactions between fish and sharks.
+- **Constructeur** : Initialise la position, le compteur de tours pour la reproduction, et le nom de représentation du poisson.
+- **Méthodes principales** :
+  - `check_and_move()` : Évalue les déplacements possibles autour du poisson et le fait bouger dans une cellule vide.
+  - `reproduce()` : Si le poisson atteint un certain nombre de tours, crée un nouveau poisson à une position adjacente. 
 
-Classes
+[![Voir le code de fish.py](https://img.shields.io/badge/Class%20Fish-darkgreen)](fish.py) 
 
-Fish
-The Fish class represents the fish in the simulation. It includes methods for movement, reproduction, and string representation.
+#### Classe `Shark`
 
-- Attributes:
-    - grid: The grid representing the ocean environment.
-    - position: The current position of the fish in the grid.
-    - turn_counter: A counter to track the number of turns since the last reproduction.
-    - name: A character representing the fish.
-    - instances_fishes: A list to hold instances of fish in the ocean.
+- **Constructeur** : Initialise l'énergie en plus des attributs de la classe `Fish`.
+- **Méthodes principales** :
+  - `check_and_move()` : Le requin se déplace vers une cellule vide ou mange un poisson pour regagner de l'énergie.
+  - `reproduce()` : Reproduit un nouveau requin lorsque le compteur de tours atteint une certaine valeur.
+  - `check_energy()` : Vérifie si le requin doit être retiré de la grille en raison d'un manque d'énergie.
 
-- Methods:
+[![Voir le code de Shark.py](https://img.shields.io/badge/Class%20Shark-brown)](shark.py)  
 
-    - check_and_move_or_eat(): Evaluates possible movements and eating opportunities for the fish.
-    - reproduce(): Allows the fish to reproduce if conditions are met.
+#### Classe `Ocean`
 
-Shark
-The Shark class represents the sharks in the simulation. It inherits from the Fish class and includes additional attributes and methods specific to sharks.
+La classe `Ocean` représente l'environnement dans lequel les poissons et les requins interagissent. Elle est responsable de la gestion de la grille représentant l'océan, de l'initialisation des poissons et des requins, ainsi que de l'exécution des actions dans chaque tour du simulateur.
 
-- Attributes:
+- **Constructeur** : 
 
-    - energy: The current energy level of the shark.
-    - turn_counter: A counter to track the number of turns since the last reproduction.
-    - instances_sharks: A list to hold instances of sharks in the ocean.
+    - `width (int)`: Le nombre de lignes de la grille qui représente l'océan.
 
-- Methods:
+    - `height (int)`: Le nombre de colonnes de la grille qui représente l'océan.
 
-    - check_and_move(): Evaluates possible movements for the shark, allowing it to eat fish or move to an empty space.
-    - reproduce(): Allows the shark to reproduce if conditions are met.
-    - check_energy(): Checks the shark's energy level and removes it from the grid if it reaches zero.
-    
-Contributing
-Contributions are welcome! If you have suggestions for improvements or new features, please open an issue or submit a pull request.
 
-License
-This project is licensed under the MIT License - see the [Missing link] file for details.
+
+- **Attributs de classe** : 
+    - `grid (list)`: La grille qui représente l'océan, où chaque cellule peut être vide (représentée par un `.`), ou remplit par un poisson ou un requin.
+    - `instances_fishes (list)`: Liste qui contient les instances des poissons présents dans l'océan.
+    - `instances_sharks (list)`: Liste qui contient les instances des requins présents dans l'océan.
+
+
+
+- **Méthodes principales** :
+
+    - `init_grid()`: Initialise la grille en plaçant les poissons et les requins à des positions aléatoires, selon les listes d'instances données.
+    - `move()`: Met à jour la grille en fonction des mouvements effectués par les poissons et les requins.
+    - `start_simulation()`: Effectue les actions de tous les poissons et requins dans un tour (déplacements, reproduction, etc.).
+
+
+[![Voir le code de Environnement.py](https://img.shields.io/badge/Class%20Ocean-darkblue)](environnement.py)  
+
+
+
+
+
+### Lancement de la Simulation
+
+Pour lancer la simulation, paramétrez le fichier `settings.py` en saisissant le taux d'occupation de la grille et la proportion de poissons et de requins.
+
+Exécutez le fichier `main.py` qui initialise la grille, place les poissons et les requins, et exécute les itérations de simulation. La grille se met à jour à chaque tour selon les règles définies dans les classes `Fish` et `Shark`.
+
+
+### Contributeurs
+
+Ce projet a été imaginé et réalisé par :
+- Sami Kabdani - Apprenant Tech IA
+- Michael Adebayo - Apprenant Tech IA
+- Antoine Delvoye - Apprenant Tech IA
+
+### Remerciements
+
+- A notre formateur, Benjamin Quinet, pour ses précieux conseils et son accompagnement tout au long de ce projet.
+
+- A nos camarades, pour les échanges enrichissants qui nous ont permis de surmonter les obstacles rencontrés.
+
+- A Safia, pour la confiance accordée, et à Simplon Hauts-de-France, pour le cadre d'apprentissage et les moyens mis à disposition permettant de concrétiser ce projet.

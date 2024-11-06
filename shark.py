@@ -1,5 +1,5 @@
 import random
-from Fish import *
+from fish import *
 from colorama import Fore, Style
 
 
