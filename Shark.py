@@ -1,5 +1,6 @@
 import random
 from Fish import *
+from colorama import Fore, Style
 
 
 class Shark(Fish):
@@ -34,7 +35,7 @@ class Shark(Fish):
         shark.check_and_move()
     """
 
-    def __init__(self, energy, position, grid, instances_fishes, instances_sharks, turn_counter=0):
+    def __init__(self, energy :  int, position : tuple, grid : list, instances_fishes : list, instances_sharks : list, turn_counter : int = 0):
         """
         Initializes a new instance of the Shark class.
 
@@ -55,7 +56,7 @@ class Shark(Fish):
         super().__init__(position, grid, instances_fishes)
         self.energy = energy
         self.turn_counter = turn_counter
-        self.name = 'S'
+        self.name = f"{Fore.RED}S{Style.RESET_ALL}"
         self.instances_fishes = instances_fishes 
         self.instances_sharks = instances_sharks
 
@@ -95,8 +96,8 @@ class Shark(Fish):
             ((self.position[0] - 1) % len(self.grid), (self.position[1]) % len(self.grid))   # south
         ]
 
-        # Initialize lists to track possible tuna positions and movement options
-        tuna_possible = []
+        # Initialize lists to track possible fish positions and movement options
+        fish_possible = []
         self.move_possible = []
         move_impossible = []
 
@@ -112,23 +113,23 @@ class Shark(Fish):
 
             # Check if the position is within the grid limits
             if 0 <= pos[0] < len(self.grid) and 0 <= pos[1] < len(self.grid[0]):  # limits of the grid
-                controle_case = self.grid[pos[0]][pos[1]]
+                control_case = self.grid[pos[0]][pos[1]]
 
-                # If the cell contains a fish (not a shark), add it to possible tuna positions
-                if isinstance(controle_case, Fish) and not isinstance(controle_case, Shark): 
-                    tuna_possible.append(pos)
+                # If the cell contains a fish (not a shark), add it to possible fish positions
+                if isinstance(control_case, Fish) and not isinstance(control_case, Shark): 
+                    fish_possible.append(pos)
 
                 # If the cell is empty, add it to possible movement options
-                if controle_case == ".":
+                if control_case == ".":
                     self.move_possible.append(pos)
 
                 # If the cell contains another shark, add it to impossible movements
-                if isinstance(controle_case, Shark): 
+                if isinstance(control_case, Shark): 
                     move_impossible.append(pos)
 
-        # If there are possible tuna positions, choose one to eat
-        if tuna_possible:
-            eat_position = random.choice(tuna_possible)
+        # If there are possible fish positions, choose one to eat
+        if fish_possible:
+            eat_position = random.choice(fish_possible)
 
             # Check if the chosen position contains a fish
             if eat_position and isinstance(self.grid[eat_position[0]][eat_position[1]], Fish) and not isinstance(self.grid[eat_position[0]][eat_position[1]], Shark):
@@ -140,7 +141,7 @@ class Shark(Fish):
                 # Update the shark's position to the location of the eaten fish
                 self.position = eat_position
                 self.grid[eat_position[0]][eat_position[1]] = self  # Place the shark in the new position
-                self.energy += 1  # Increase the shark's energy
+                self.energy += 2  # Increase the shark's energy
                 self.grid[self.old_position[0]][self.old_position[1]] = "."  # Mark the old position as empty
 
         # If there are possible movements, choose one randomly
