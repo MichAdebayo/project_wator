@@ -3,33 +3,31 @@ import time
 from Shark import *
 from Fish import *
 from animals import Animals
+from settings import *
 
-class Environment:
-    instances_sharks = []                   # On initialise une liste qui répertorie les sharks de la grille
+class Ocean:
     def __init__(self,largeur,longueur):
         self.largeur = largeur
         self.longueur = longueur
-        # self.instances_sharks = []                   # On initialise une liste qui répertorie les sharks de la grille
+
+        self.grille = [["." for _ in range(self.longueur)] for _ in range(self.largeur)] # On initialise une grille vide
+        self.instances_sharks = []                  # On initialise une liste qui répertorie les sharks de la grille
+        self.instances_fishes = []
+
+        self.init_grille()
 
     def init_grille(self):
-        self.grille = [["." for _ in range(self.longueur)] for _ in range(self.largeur)] # On initialise une grille vide
-        population = round(Settings.nb_fishes *(self.longueur*self.largeur))
+        pop_sharks = 1 # round(Settings.nb_sharks)
+        pop_tunas = 3 # round(Settings.nb_tunas)
 
-        pop_sharks = round(Settings.nb_sharks)
-        pop_tunas = round(Settings.nb_tunas)
-
-        pop_sharks = 1 #round(settings.nb_sharks*population)
-        pop_tunas = round(settings.nb_tunas*population)
-
-         
         sharks_coord = []
         while pop_sharks > 0:
             x = random.randint(0,self.longueur-1)
             y = random.randint(0,self.largeur-1)
             if (x,y) not in sharks_coord:
-                new =  Shark(energy=10, position=(x,y))  #' #Shark.Shark(energy=10, position=(x,y))
-                self.grille[x][y] =  new
-                Animals.instances_sharks.append(new)
+                new_shark = Shark(energy=10, position=(x,y), grille = self.grille)
+                self.grille[x][y] = new_shark
+                self.instances_sharks.append(new_shark)
 
                 sharks_coord.append((x,y))
                 pop_sharks -= 1
@@ -40,8 +38,37 @@ class Environment:
             y = random.randint(0,self.largeur-1)
 
             if (x,y) not in tunas_coord and (x,y) not in sharks_coord:
-                self.grille[x][y] = 'T' #Fish.Fish(position=(x,y)) #'T'
-                tunas_coord.append((x,y))
+
+                new_fish = Fish(position = (x,y))
+                self.grille[x][y] = new_fish
+                self.instances_fishes.append(new_fish)
+
+
                 pop_tunas -= 1
 
         return self.grille, sharks_coord, tunas_coord
+
+    def mouv_ok(self):
+
+        for shark in self.instances_sharks :
+            shark.check_and_move()
+            shark.reproduce()
+            shark.energy()
+            print(shark.position)
+            
+        
+        for fish in self.instances_fishes:
+            fish.check_and_move()
+            fish.reproduce()
+            print(fish.position)
+
+
+if __name__ == "__main__":
+    my_ocean = Ocean(5,5)
+
+
+
+
+
+
+

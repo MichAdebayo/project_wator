@@ -1,11 +1,18 @@
 import random
 import time
+from animals import Animals
 
 class Fish:
     def __init__(self, position, compteur_tour=1):
         self.position = position
         self.compteur_tour = compteur_tour
+        self.name = "F"
+        Animals.instances_fish.append(self)
 
+
+    def __str__(self):
+        return self.name
+    
     def check_and_move(self):
 
         east_position = ((self.position[0]) % len(grid), (self.position[1]+1) % len(grid))
@@ -29,26 +36,28 @@ class Fish:
 
                 if controle_case == ".": 
                     mouv_possible.append(i) 
-                elif controle_case == "T":
+                elif controle_case == "F":
                     mouv_impossible.append(i)
 
         if mouv_possible: 
             move = random.choice(mouv_possible) 
             self.position = move
-            grid[move[0]][move[1]] = "T"
+            grid[move[0]][move[1]] = "F"
             grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
 
         elif mouv_impossible and len(mouv_impossible)!=4:
             new_mouv = random.choice(mouv_possible) 
             self.position = new_mouv
-            grid[new_mouv[0]][new_mouv[1]] = "T"
+            grid[new_mouv[0]][new_mouv[1]] = "F"
             grid[self.ancienne_position[0]][self.ancienne_position[1]] = "."
 
     def reproduce(self):
         if self.compteur_tour == 2:
-            grid[ancienne_position[0]][ancienne_position[1]] = "T" 
-            grid[fish.position[0]][fish.position[1]] = "T"
+            new_fish = Fish(position=(self.ancienne_position[0],self.ancienne_position[1]))
+            grid[ancienne_position[0]][ancienne_position[1]] = new_fish
+            grid[fish.position[0]][fish.position[1]] = "F"
             self.compteur_tour = 0
+            # l_fish.append(new_fish)
 
 grid = [
     [".", ".", ".", ".", "."],
@@ -70,7 +79,7 @@ while True:
     print("Grille:")
 
     for ligne in grid:
-        print("  ".join(ligne))
+        print(ligne)
 
     time.sleep(1)
 
