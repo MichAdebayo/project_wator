@@ -58,7 +58,7 @@ class Ocean:
         """
         Initializes the ocean grid by populating it with a specified number of fish and sharks.
 
-        This method randomly places fish and sharks in the grid, ensuring that they occupy empty spaces. It sets the initial population of tunas and sharks.
+        This method randomly places fish and sharks in the grid, ensuring that they occupy empty spaces. It sets the initial population of fish and sharks.
 
         Args:
             None
@@ -70,16 +70,16 @@ class Ocean:
         # Calculate the total population based on the occupation rate and grid size
         population = round(settings.occupation_rate * (self.height * self.width))
 
-        # Determine the number of sharks and tunas based on the calculated population
+        # Determine the number of sharks and fish based on the calculated population
         pop_sharks = round(settings.number_of_sharks * population)
-        pop_tunas = round(settings.number_of_tunas * population)
+        pop_fish = round(settings.number_of_fish * population)
 
         # Check if the shark population exceeds the available space in the environment
         if pop_sharks > self.width * self.height:
             raise ValueError("Sharks population exceeds environment space")
 
-        # Populate the grid with tunas until the desired population is reached
-        while pop_tunas > 0:
+        # Populate the grid with fish until the desired population is reached
+        while pop_fish > 0:
 
             # Randomly select a position in the grid
             x, y = random.randint(0, self.width - 1), random.randint(0, self.height - 1)
@@ -92,8 +92,8 @@ class Ocean:
                 self.grid[x][y] = new_fish
                 self.instances_fishes.append(new_fish)
 
-                # Decrease the remaining tunas to be placed
-                pop_tunas -= 1
+                # Decrease the remaining fish to be placed
+                pop_fish -= 1
 
         # Populate the grid with sharks until the desired population is reached
         while pop_sharks > 0:
@@ -184,7 +184,7 @@ class Ocean:
             print("Fishes : ", len(self.instances_fishes))
 
             # Pause the simulation for a short duration to visualize the changes
-            time.sleep(0.2)
+            time.sleep(0.1)
 
             # Increment the simulation time counter
             chronos += 1
