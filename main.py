@@ -3,6 +3,5 @@ from Shark import *        # Import all classes and functions from the Shark mod
 from Fish import *         # Import all classes and functions from the Fish module
 
 # Initialize the ocean simulation with a grid size of 20x20
-ocean = Ocean(20, 20)
-
+ocean = Ocean(40, 40)
 
