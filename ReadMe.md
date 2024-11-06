@@ -37,6 +37,8 @@ Le projet est organisé en plusieurs fichiers :
 - **environnement.py** : Gère la création et l'affichage de la grille océanique.
 - **main.py** : Point d'entrée du programme pour initialiser la grille et lancer la simulation.
 - **settings.py** : Contient les paramètres de la simulation, comme la proportion de la grille occupée par les poissons et les requins, et la taille de la grille en largeur et hauteur. 
+- **requirements.txt** : Gère les dépendances (bibliothèques ou packages) nécessaires au bon fonctionnement d'un projet.
+
 
 ### Fonctionnalités des Classes
 
