@@ -5,13 +5,16 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from Environment import Ocean
 
-
 # Initialize Pygame
 pygame.init()
 
+# Initialize the ocean simulation
+ocean = Ocean(30, 20)
+
 # Set up the display
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 500  # Total height
+CELL_SIZE = 30
+WINDOW_WIDTH = ocean.width * CELL_SIZE # Total width
+WINDOW_HEIGHT = ocean.height * CELL_SIZE  # Total height
 DATA_HEIGHT = 50  # Height reserved for displaying data
 simulation_height = WINDOW_HEIGHT - DATA_HEIGHT  # Height for the simulation area
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -27,8 +30,6 @@ shark_image = pygame.transform.scale(shark_image, (32, 32))
 fish_image = pygame.transform.scale(fish_image, (32, 32))
 background_image = pygame.transform.scale(background_image, (WINDOW_WIDTH, WINDOW_HEIGHT))  # Scale background to fit window
 
-# Initialize the ocean simulation
-ocean = Ocean(20, 20)
 
 # Button settings
 BUTTON_WIDTH = 160  # Increased width
@@ -89,9 +90,6 @@ while running:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(mouse_pos):
                     simulation_running = True
-                    # Start playing audio when the simulation starts
-                    pygame.mixer.music.load("Assets/water-bubbles-2.wav")  # Replace with your audio file path
-                    pygame.mixer.music.play(-1)  # Play the audio in a loop
 
     else:
         # Clear the screen for the simulation
@@ -121,9 +119,9 @@ while running:
         # Display the loop counter, number of sharks, and number of fishes horizontally
         # Prepare text for display
         info_font = pygame.font.Font(None, 24)
-        chronos_text = info_font.render(f"Chronos: {loop_counter}", True, (0, 0, 0))  # Black text
-        sharks_text = info_font.render(f"Sharks: {num_sharks}", True, (0, 0, 0))  # Black text
-        fishes_text = info_font.render(f"Fishes: {num_fishes}", True, (0, 0, 0))  # Black text
+        chronos_text = info_font.render(f"Chronos: {loop_counter}", True, (0, 0, 0))  # White text
+        sharks_text = info_font.render(f"Sharks: {num_sharks}", True, (0, 0, 0))  # White text
+        fishes_text = info_font.render(f"Fishes: {num_fishes}", True, (0, 0, 0))  # White text
 
         # Calculate positions to center the text horizontally
         total_width = chronos_text.get_width() + sharks_text.get_width() + fishes_text.get_width() + 40  # 40 for spacing
@@ -144,8 +142,6 @@ while running:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:  # Allow quitting with Esc key
-                    # Stop the audio when Esc is pressed
-                    pygame.mixer.music.stop()  # Stop the music
                     # Plot the population data using Matplotlib
                     plt.figure(figsize=(10, 5))
                     sns.lineplot(data=shark_population_history, label='Sharks', color='blue')
@@ -164,3 +160,4 @@ while running:
 
 # Quit Pygame
 pygame.quit()
+

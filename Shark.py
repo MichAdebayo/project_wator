@@ -141,7 +141,7 @@ class Shark(Fish):
                 # Update the shark's position to the location of the eaten fish
                 self.position = eat_position
                 self.grid[eat_position[0]][eat_position[1]] = self  # Place the shark in the new position
-                self.energy += 2  # Increase the shark's energy
+                self.energy += 1  # Increase the shark's energy
                 self.grid[self.old_position[0]][self.old_position[1]] = "."  # Mark the old position as empty
 
         # If there are possible movements, choose one randomly
