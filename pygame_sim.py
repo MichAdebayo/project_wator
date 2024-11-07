@@ -3,15 +3,21 @@ import os
 import time
 import matplotlib.pyplot as plt
 import seaborn as sns
-from Environment import Ocean
+from environment import Ocean
 
 
 # Initialize Pygame
 pygame.init()
 
+# Initialize the ocean simulation
+ocean = Ocean(30, 20)
+
+# Define cell size per cell
+CELL_SIZE =  30
+
 # Set up the display
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 500  # Total height
+WINDOW_WIDTH = ocean.width * CELL_SIZE
+WINDOW_HEIGHT = ocean.height * CELL_SIZE
 DATA_HEIGHT = 50  # Height reserved for displaying data
 simulation_height = WINDOW_HEIGHT - DATA_HEIGHT  # Height for the simulation area
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -26,9 +32,6 @@ background_image = pygame.image.load(os.path.join("Assets", "background_image.jp
 shark_image = pygame.transform.scale(shark_image, (32, 32))
 fish_image = pygame.transform.scale(fish_image, (32, 32))
 background_image = pygame.transform.scale(background_image, (WINDOW_WIDTH, WINDOW_HEIGHT))  # Scale background to fit window
-
-# Initialize the ocean simulation
-ocean = Ocean(20, 20)
 
 # Button settings
 BUTTON_WIDTH = 160  # Increased width
