@@ -1,8 +1,8 @@
 import random  # Provides functions for generating random numbers
 import time    # Provides time-related functions
 import settings  # Custom settings module for configuration
-from Fish import Fish  # Importing the Fish class from the Fish module
-from Shark import Shark  # Importing the Shark class from the Shark module
+from fish import Fish  # Importing the Fish class from the Fish module
+from shark import Shark  # Importing the Shark class from the Shark module
 
 class Ocean:
     """

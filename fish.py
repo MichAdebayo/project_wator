@@ -66,6 +66,10 @@ class Fish:
 
         return self.name
 
+
+    def __str__(self):
+        return self.name
+    
     def check_and_move(self):
         """
         Evaluates possible movements for the fish and updates its position accordingly.
