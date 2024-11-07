@@ -3,6 +3,7 @@ import time    # Provides time-related functions
 import settings  # Custom settings module for configuration
 from fish import Fish  # Importing the Fish class from the Fish module
 from shark import Shark  # Importing the Shark class from the Shark module
+import matplotlib.pyplot as plt # Provides graphical plotting functions
 
 class Ocean:
     """
@@ -44,17 +45,23 @@ class Ocean:
         # Initialize the ocean grid with empty cells represented by "."
         self.grid = [["." for _ in range(self.height)] for _ in range(self.width)]
 
+        # Stores the list of the time_counter per loop
+        self.time = []
+
         # Create an empty list to hold instances of fish in the ocean
         self.instances_fishes = []
+
+        # Create an empty list to store the population of fishes per loop
+        self.total_fishes = []
 
         # Create an empty list to hold instances of sharks in the ocean
         self.instances_sharks = []
         
-        # Initialize the grid
-        self.init_grid()
+        # Create an empty list to store the population of sharks per loop
+        self.total_sharks = []
 
-        # Start the simulation process
-        # self.start_simulation()
+        # Initialize grid
+        self.init_grid()
 
 
     def init_grid(self) -> None:
@@ -94,9 +101,13 @@ class Ocean:
                 new_fish = Fish(position=(x, y), instances_fishes=self.instances_fishes, grid=self.grid)
                 self.grid[x][y] = new_fish
                 self.instances_fishes.append(new_fish)
-
+                
                 # Decrease the remaining fish to be placed
                 pop_fish -= 1
+
+        # Append the total number of fishes per loop to the total_fishes list
+        self.total_fishes.append(len(self.instances_fishes)) 
+
 
         # Populate the grid with sharks until the desired population is reached
         while pop_sharks > 0:
@@ -108,12 +119,15 @@ class Ocean:
             if self.grid[x][y] == ".":
 
                 # Create a new shark instance and place it in the grid
-                new_shark = Shark(energy=8, position=(x, y), instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
+                new_shark = Shark(energy=7, position=(x, y), instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
                 self.grid[x][y] = new_shark
                 self.instances_sharks.append(new_shark)
 
                 # Decrease the remaining sharks to be placed
                 pop_sharks -= 1
+
+        # Append the total number of sharks per loop to the total_fishes list
+        self.total_sharks.append(len(self.instances_sharks)) 
 
 
     def move(self) -> None:      
@@ -170,6 +184,9 @@ class Ocean:
         # Start the simulation time counter
         chronos = 0 + 1
 
+        # Add the total number of loops to the time list
+        self.time.append(chronos)
+
         # Continue the simulation while there are sharks with energy
         while any(shark.check_energy() == False for shark in self.instances_sharks):
             
@@ -185,9 +202,12 @@ class Ocean:
             print("Chronos :", chronos)
             print("Sharks :" , len(self.instances_sharks))
             print("Fishes : ", len(self.instances_fishes))
+            self.total_sharks.append(len(self.instances_sharks))
+            self.total_fishes.append(len(self.instances_fishes))
+            self.time.append(chronos)
 
             # Pause the simulation for a short duration to visualize the changes
-            time.sleep(0.1)
+            time.sleep(0.0001)
 
             # Increment the simulation time counter
             chronos += 1
@@ -202,3 +222,27 @@ class Ocean:
                 print("All fishes have been eaten. Sharks dominate the ocean!")
                 break
 
+            # If time = 1000, stop!
+            # if chronos ==1000:
+            #     print("Time out")
+
+                # break
+        
+        # Plot the final time series of the shark vs fish population after 1000 loops
+        plt.plot(self.total_fishes, label="Fish Population")
+        plt.plot(self.total_sharks, label="Shark Population")
+        plt.xlabel("chronons")
+        plt.ylabel("Population")
+        plt.legend()
+        plt.title("Evolution of Fish and Shark Populations Over Time")
+        plt.show()
+
+        # Plot the final time series of the shark vs fish population after 1000 loops
+        ratio = [r / p if p != 0 else 0 for p, r in zip(self.total_fishes, self.total_sharks)]
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(ratio, label="fish/sharks ratio", color="purple")
+        plt.xlabel("Chronos")
+        plt.ylabel("Ratio")
+        plt.title("Evolution of sharks to fish ratio over time")
+        plt.show()

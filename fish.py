@@ -146,7 +146,7 @@ class Fish:
         """
 
         # Check if the fish has reached the reproduction turn limit and has possible movements
-        if self.turn_counter == 7 and self.move_possible:
+        if self.turn_counter == 9 and self.move_possible:
 
             # Create a new fish instance at the previous position
             baby_fish = Fish(position=self.old_position, instances_fishes=self.instances_fishes, grid=self.grid)

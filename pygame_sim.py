@@ -10,10 +10,10 @@ from environment import Ocean
 pygame.init()
 
 # Initialize the ocean simulation
-ocean = Ocean(30, 20)
+ocean = Ocean(60, 40)
 
 # Define cell size per cell
-CELL_SIZE =  30
+CELL_SIZE =  20
 
 # Set up the display
 WINDOW_WIDTH = ocean.width * CELL_SIZE
@@ -101,7 +101,7 @@ while running:
         screen.fill((0, 191, 255))  # Water color
 
         # Draw the grid
-        cell_width = (WINDOW_WIDTH - 20) // ocean.width
+        cell_width = (WINDOW_WIDTH - 20) // ocean.width  # Width for the grid
         cell_height = simulation_height // ocean.height  # Height for the grid
         for x in range(ocean.width):
             for y in range(ocean.height):
@@ -147,8 +147,10 @@ while running:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:  # Allow quitting with Esc key
+
                     # Stop the audio when Esc is pressed
                     pygame.mixer.music.stop()  # Stop the music
+
                     # Plot the population data using Matplotlib
                     plt.figure(figsize=(10, 5))
                     sns.lineplot(data=shark_population_history, label='Sharks', color='blue')
@@ -159,11 +161,12 @@ while running:
                     plt.legend()
                     plt.grid()
                     plt.show()  # Display the plot
-                    running = False  # Exit the simulation loop
+                    
+                    running = False # Exit the simulation loop
 
         # Update the simulation
         ocean.move()
-        time.sleep(0.1)
+        time.sleep(0.0001)
 
 # Quit Pygame
 pygame.quit()

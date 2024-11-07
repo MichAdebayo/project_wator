@@ -153,12 +153,12 @@ class Shark(Fish):
             self.grid[old_position[0]][old_position[1]] = "."  # Mark the old position as empty
 
         # If there are impossible movements but not all directions are blocked
-        elif move_impossible and len(move_impossible) != 4:
-            alt_move = random.choice(directions)  # Choose an alternative move
-            self.position = alt_move  # Update the shark's position
-            self.grid[self.position[0]][self.position[1]] = self  # Place the shark in the new position
-            self.energy -= 1  # Decrease the shark's energy
-            self.grid[old_position[0]][old_position[1]] = "."  # Mark the old position as empty
+        # elif move_impossible and len(move_impossible) != 4:
+        #     alt_move = random.choice(directions)  # Choose an alternative move
+        #     self.position = alt_move  # Update the shark's position
+        #     self.grid[self.position[0]][self.position[1]] = self  # Place the shark in the new position
+        #     self.energy -= 1  # Decrease the shark's energy
+        #     self.grid[old_position[0]][old_position[1]] = "."  # Mark the old position as empty
 
         # If no movement is possible, keep the shark in its current position
         else: 
@@ -179,10 +179,10 @@ class Shark(Fish):
         """
 
         # Check if the shark has reached the reproduction turn limit and has possible movements
-        if self.turn_counter == 11 and self.move_possible:
+        if self.turn_counter == 10 and self.move_possible:
 
             # Create a new baby shark instance at the previous position with initial energy
-            baby_shark = Shark(energy=6, position=self.old_position, instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
+            baby_shark = Shark(energy=7, position=self.old_position, instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
             
             # Add the new baby shark to the list of shark instances
             self.instances_sharks.append(baby_shark)
