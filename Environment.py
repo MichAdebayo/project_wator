@@ -49,9 +49,12 @@ class Ocean:
 
         # Create an empty list to hold instances of sharks in the ocean
         self.instances_sharks = []
+        
+        # Initialize the grid
+        self.init_grid()
 
         # Start the simulation process
-        self.start_simulation()
+        # self.start_simulation()
 
 
     def init_grid(self) -> None:
@@ -105,7 +108,7 @@ class Ocean:
             if self.grid[x][y] == ".":
 
                 # Create a new shark instance and place it in the grid
-                new_shark = Shark(energy=7, position=(x, y), instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
+                new_shark = Shark(energy=8, position=(x, y), instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
                 self.grid[x][y] = new_shark
                 self.instances_sharks.append(new_shark)
 

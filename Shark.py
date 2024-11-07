@@ -141,7 +141,7 @@ class Shark(Fish):
                 # Update the shark's position to the location of the eaten fish
                 self.position = eat_position
                 self.grid[eat_position[0]][eat_position[1]] = self  # Place the shark in the new position
-                self.energy += 2  # Increase the shark's energy
+                self.energy += 1  # Increase the shark's energy
                 self.grid[self.old_position[0]][self.old_position[1]] = "."  # Mark the old position as empty
 
         # If there are possible movements, choose one randomly
@@ -154,7 +154,7 @@ class Shark(Fish):
 
         # If there are impossible movements but not all directions are blocked
         elif move_impossible and len(move_impossible) != 4:
-            alt_move = random.choice(self.move_possible)  # Choose an alternative move
+            alt_move = random.choice(directions)  # Choose an alternative move
             self.position = alt_move  # Update the shark's position
             self.grid[self.position[0]][self.position[1]] = self  # Place the shark in the new position
             self.energy -= 1  # Decrease the shark's energy
@@ -182,7 +182,7 @@ class Shark(Fish):
         if self.turn_counter == 11 and self.move_possible:
 
             # Create a new baby shark instance at the previous position with initial energy
-            baby_shark = Shark(energy=7, position=self.old_position, instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
+            baby_shark = Shark(energy=6, position=self.old_position, instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
             
             # Add the new baby shark to the list of shark instances
             self.instances_sharks.append(baby_shark)
