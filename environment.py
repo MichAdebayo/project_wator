@@ -119,7 +119,7 @@ class Ocean:
             if self.grid[x][y] == ".":
 
                 # Create a new shark instance and place it in the grid
-                new_shark = Shark(energy=7, position=(x, y), instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
+                new_shark = Shark(energy=10, position=(x, y), instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
                 self.grid[x][y] = new_shark
                 self.instances_sharks.append(new_shark)
 

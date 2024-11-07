@@ -179,10 +179,10 @@ class Shark(Fish):
         """
 
         # Check if the shark has reached the reproduction turn limit and has possible movements
-        if self.turn_counter == 10 and self.move_possible:
+        if self.turn_counter == 12 and self.move_possible:
 
             # Create a new baby shark instance at the previous position with initial energy
-            baby_shark = Shark(energy=7, position=self.old_position, instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
+            baby_shark = Shark(energy=10, position=self.old_position, instances_fishes=self.instances_fishes, instances_sharks=self.instances_sharks, grid=self.grid)
             
             # Add the new baby shark to the list of shark instances
             self.instances_sharks.append(baby_shark)
