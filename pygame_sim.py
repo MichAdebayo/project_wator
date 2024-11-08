@@ -78,7 +78,7 @@ while running:
 
         # Display quit message below the button
         quit_message_font = pygame.font.Font(None, 24)
-        quit_message_text = quit_message_font.render("Press Esc to Exit", True, (255, 255, 255))  # White text
+        quit_message_text = quit_message_font.render("Press Esc to Mute Sound", True, (255, 255, 255))  # White text
         quit_text_rect = quit_message_text.get_rect(center=(WINDOW_WIDTH // 2, BUTTON_Y + BUTTON_HEIGHT + 30))  # Increased spacing
         screen.blit(quit_message_text, quit_text_rect)
 
@@ -147,26 +147,30 @@ while running:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:  # Allow quitting with Esc key
-
+                    
                     # Stop the audio when Esc is pressed
                     pygame.mixer.music.stop()  # Stop the music
-
-                    # Plot the population data using Matplotlib
-                    plt.figure(figsize=(10, 5))
-                    sns.lineplot(data=shark_population_history, label='Sharks', color='blue')
-                    sns.lineplot(data=fish_population_history, label='Fishes', color='orange')
-                    plt.title('Population Over Time')
-                    plt.xlabel('Chronos (Loops)')
-                    plt.ylabel('Population')
-                    plt.legend()
-                    plt.grid()
-                    plt.show()  # Display the plot
-                    
-                    running = False # Exit the simulation loop
+                    simulation_ended = True  # Set the flag to indicate simulation has ended
 
         # Update the simulation
         ocean.move()
         time.sleep(0.0001)
+
+        #running = False # Exit the simulation loop
+
+# After exiting the simulation loop, plot the population data
+if simulation_ended:
+                    
+# Plot the population data using Matplotlib
+    plt.figure(figsize=(10, 5))
+    sns.lineplot(data=shark_population_history, label='Sharks', color='blue')
+    sns.lineplot(data=fish_population_history, label='Fishes', color='orange')
+    plt.title("Evolution of Fish and Shark Populations Over Time", fontweight='bold', fontsize=13)
+    plt.xlabel("Chronos (Loops)", fontsize=10)
+    plt.ylabel("Population",  fontsize=10)
+    plt.legend(loc="upper right", frameon=False)
+    plt.grid(False)
+    plt.show()  # Display the plot
 
 # Quit Pygame
 pygame.quit()

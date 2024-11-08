@@ -4,6 +4,7 @@ import settings  # Custom settings module for configuration
 from fish import Fish  # Importing the Fish class from the Fish module
 from shark import Shark  # Importing the Shark class from the Shark module
 import matplotlib.pyplot as plt # Provides graphical plotting functions
+import seaborn as sns # 
 
 class Ocean:
     """
@@ -207,7 +208,7 @@ class Ocean:
             self.time.append(chronos)
 
             # Pause the simulation for a short duration to visualize the changes
-            time.sleep(0.0001)
+            time.sleep(0.01)
 
             # Increment the simulation time counter
             chronos += 1
@@ -223,26 +224,35 @@ class Ocean:
                 break
 
             # If time = 1000, stop!
-            # if chronos ==1000:
-            #     print("Time out")
+            if chronos ==2000:
+                print("Time out")
 
-                # break
+                break
         
         # Plot the final time series of the shark vs fish population after 1000 loops
-        plt.plot(self.total_fishes, label="Fish Population")
-        plt.plot(self.total_sharks, label="Shark Population")
-        plt.xlabel("chronons")
-        plt.ylabel("Population")
-        plt.legend()
-        plt.title("Evolution of Fish and Shark Populations Over Time")
-        plt.show()
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 7))  # Create two subplots
 
-        # Plot the final time series of the shark vs fish population after 1000 loops
+        # Plot shark and fish populations
+        sns.lineplot(ax=ax1, data=self.total_sharks, label='Sharks', color='blue')
+        sns.lineplot(ax=ax1, data=self.total_fishes, label='Fishes', color='orange')
+        ax1.set_xlabel("Chronos (Loops)", fontsize=10)
+        ax1.set_ylabel("Population",  fontsize=10)
+        ax1.set_title("Evolution of Fish and Shark Populations Over Time", fontweight='bold', fontsize=13)
+        ax1.legend(loc="upper right", frameon=False)
+        ax1.grid(False)
+
+        # Calculate the ratio of fish to sharks
         ratio = [r / p if p != 0 else 0 for p, r in zip(self.total_fishes, self.total_sharks)]
+        
+        # Plot the fish/shark ratio
+        sns.lineplot(ax=ax2, data=ratio, label="Fish/Shark Ratio", color="purple")
+        ax2.set_xlabel("Chronos (Loops)", fontsize=10)
+        ax2.set_ylabel("Ratio", fontsize=10)
+        ax2.set_title("Evolution of Sharks to Fish Ratio Over Time", fontweight='bold', fontsize=12)
+        ax2.legend(frameon=False)
+        ax2.grid(False)
 
-        plt.figure(figsize=(10, 6))
-        plt.plot(ratio, label="fish/sharks ratio", color="purple")
-        plt.xlabel("Chronos")
-        plt.ylabel("Ratio")
-        plt.title("Evolution of sharks to fish ratio over time")
-        plt.show()
+        # Adjust layout to prevent overlap and increase space between subplots
+        plt.subplots_adjust(hspace=0.9)  # Increase space between subplots
+        plt.tight_layout()  # Adjust layout to prevent overlap
+        plt.show()  # Display the plot
