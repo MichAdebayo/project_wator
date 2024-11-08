@@ -2,7 +2,7 @@
 
 Ce projet simule l'écosystème marin en modélisant les comportements des requins et des poissons dans une grille représentant l'océan. Le but est de comprendre les interactions entre prédateurs et proies et d'observer l'évolution d'une population dans un environnement dynamique.
 
-![Texte alternatif](./photo.webp)
+![Texte alternatif](.assets/photo.webp)
 
 
 
