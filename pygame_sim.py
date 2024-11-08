@@ -147,16 +147,18 @@ while running:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:  # Allow quitting with Esc key
-                    
                     # Stop the audio when Esc is pressed
                     pygame.mixer.music.stop()  # Stop the music
                     simulation_ended = True  # Set the flag to indicate simulation has ended
+                    
+                running = False # Exit the simulation loop
+                    
 
         # Update the simulation
         ocean.move()
         time.sleep(0.0001)
 
-        #running = False # Exit the simulation loop
+        
 
 # After exiting the simulation loop, plot the population data
 if simulation_ended:
