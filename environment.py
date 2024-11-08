@@ -50,13 +50,13 @@ class Ocean:
         self.time = []
 
         # Create an empty list to hold instances of fish in the ocean
-        self.instances_fishes = []
+        self.instances_fishes: list [Fish] = []
 
         # Create an empty list to store the population of fishes per loop
         self.total_fishes = []
 
         # Create an empty list to hold instances of sharks in the ocean
-        self.instances_sharks = []
+        self.instances_sharks: list [Shark] = []
         
         # Create an empty list to store the population of sharks per loop
         self.total_sharks = []
