@@ -103,14 +103,11 @@ Exécutez le fichier `main.py` qui initialise la grille, place les poissons et l
 ### Contributeurs
 
 Ce projet a été imaginé et réalisé par :
-- Sami Kabdani - Apprenant Tech IA
-- Michael Adebayo - Apprenant Tech IA
-- Antoine Delvoye - Apprenant Tech IA
+- Sami Kabdani
+- Michael Adebayo
+- Antoine Delvoye
 
-### Remerciements
+### License
 
-- A notre formateur, Benjamin Quinet, pour ses précieux conseils et son accompagnement tout au long de ce projet.
+Ce projet est sous licence MIT.
 
-- A nos camarades, pour les échanges enrichissants qui nous ont permis de surmonter les obstacles rencontrés.
-
-- A Safia, pour la confiance accordée, et à Simplon Hauts-de-France, pour le cadre d'apprentissage et les moyens mis à disposition permettant de concrétiser ce projet.
